@@ -73,8 +73,8 @@ td.CalMonth { height: 2em }
 td.CalWeekday { width: 8em; height: 2em }
 td.CalDayStem { width: 8em; height: 2em }
 td.CalDay { vertical-align: middle;
-            width: 8em; height: 3em }
-td.CurDay { background-color: #DFDFFF }
+        width: 8em; height: 3em }
+table.CalTable td.CurDay { background-color: #DFDFFF }
 td.Today { font-weight: bold }
 table.ChineseDateTable { margin-left: auto; margin-right:auto }
 td.ChineseDay { width: 16em }
