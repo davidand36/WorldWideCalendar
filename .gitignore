@@ -1,0 +1,18 @@
+# These files should be ignored by git: we don't want them under version control
+
+# Temp and backup files:
+*~
+
+# Generated or compiled files (object files, executuables, libraries, etc.):
+*.a
+*.o
+*.lib
+*.pdb
+build/*
+buildCB/*
+tests/*
+debug/*
+release/*
+WorldWideCalendar
+
+# Misc files
