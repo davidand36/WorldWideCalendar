@@ -1,0 +1,53 @@
+/*
+   WorldWideCalendar_table.css
+   Copyright © 2010 David M. Anderson
+
+   WorldWideCalendar.info Cascading Style Sheet: tables.
+*/
+
+table 
+{
+    margin-left: auto;
+    margin-right:auto;
+}
+
+table.MonthTable thead td
+{
+    height: 2em;
+    background-color: #FFFFFF;
+    border-style: double;
+    font-weight: bold;
+}
+table.MonthTable th
+{
+    width: 8.5em;
+    height: 2em;
+    background-color: #FFFFFF;
+    border-style: double;
+    font-weight: bold;
+}
+td.MTDay
+{
+    vertical-align: middle;
+    width: 8.5em;
+    height: 3em;
+    background-color: #FFFFFF;
+    border-style: solid;
+    border-width: thin;
+}
+td.MTDay.CurDay
+{
+    border-width: medium;
+}
+td.MTDay.Today
+{
+    font-weight: bold;
+    background-color: #DFDFFF
+}
+
+table.MonthTable.Cols10 th,
+table.MonthTable.Cols10 td.MTDay
+{
+    width: 5.5em;
+}
+

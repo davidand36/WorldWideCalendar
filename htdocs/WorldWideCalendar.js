@@ -1,9 +1,8 @@
 /*
     WorldWideCalendar.js
     Copyright © 2010 David M. Anderson
-    WorldWideCalendar
 
-    The main App object for the Web site.
+    The main App object for the WorldWideCalendar.info Web site.
 */
 
 
@@ -176,7 +175,7 @@
                 calendarPages[ name ] = εδ.WWCal.MayanCalendarPage( );
                 break;
             case 'Chinese':
-                //!!!
+                calendarPages[ name ] = εδ.WWCal.ChineseCalendarPage( );
                 break;
             case 'Old Hindu lunisolar':
                 //!!!
@@ -251,9 +250,9 @@
     {
         var html = '';
         html += '<form name="JDForm">' +
-            '<span class="DatePart">' +
+            '<label for="JDField" class="DatePart">' +
             'Julian Day: ' +
-            '</span>' +
+            '</label>' +
             '<input type="text" class="DatePart" name="JD" id="JDField"' +
             ' maxlength="7" size="7" />' +
             '<input type="submit" class="Button" id="ChangeJD"' +
@@ -338,14 +337,13 @@
 //*****************************************************************************
 
 
-εδ.WWCal.app = εδ.WWCal.App( { serverURL:'/bin/WorldWideCalendar' } );
+εδ.WWCal.app = εδ.WWCal.App( { serverURL:'/srvc/WorldWideCalendar' } );
 
 
 //*****************************************************************************
 
 
 $(document).ready( εδ.WWCal.app.Start );
-
 
 
 //*****************************************************************************

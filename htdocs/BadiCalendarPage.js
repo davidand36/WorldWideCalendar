@@ -22,6 +22,11 @@
 //-----------------------------------------------------------------------------
 
     var theObject = { };
+    var currentDate = Date( 0, 0, 0, 0, 0, 0, 0 );
+    var firstDate = Date( 0, 0, 0, 0, 0, 0, 0 );
+    var monthLength = 0;
+    var requestsPending = 0;
+
     var calendarName = 'Badi';
     var serverURL = εδ.WWCal.app.ServerURL();
     var errorHandler = εδ.WWCal.errorHandler;
@@ -43,16 +48,11 @@
     var daysInWeek = 7;
     var weekdayNames = [ "Jalal", "Jamal", "Kamal", "Fidal",
         "`Idal", "Istijlal", "Istiqlal" ];
-    var currentDate = Date( 0, 0, 0, 0, 0, 0, 0 );
-    var firstDate = Date( 0, 0, 0, 0, 0, 0, 0 );
-    var monthLength = 0;
-    var requestsPending = 0;
-
     var CurDateRqst = 1 << 0;
     var FirstDateRqst = 1 << 1;
     var MonthLengthRqst = 1 << 2;
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     theObject.Start = function( )
     {
@@ -70,7 +70,7 @@
             StartNewMonth( true );
     };
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function Date( julianDay, day, month, year, vahid, kulliShay, dayOfWeek )
     {
@@ -87,7 +87,7 @@
         return theObject;
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function StartNewMonth( fromJD )
     {
@@ -149,7 +149,6 @@
         εδ.WWCal.app.SetJulianDay( currentDate.julianDay );
         GetFirstDate( );
         GetMonthLength( );
-        DisplayDateForm( );
     }
 
 //-----------------------------------------------------------------------------
@@ -186,6 +185,7 @@
                           dateRsp.year, dateRsp.vahid, dateRsp.kulliShay,
                           dateRsp.dayOfWeek );
         requestsPending &= ~ FirstDateRqst;
+        DisplayDateForm( );
         DisplayMonthTable( );
     }
 
@@ -219,7 +219,7 @@
 
         monthLength = ajaxResponse.monthLength;
         requestsPending &= ~ MonthLengthRqst;
-        if ( monthLength == 0 )
+        if ( monthLength === 0 )
         {
             εδ.errorHandler.ReportError( 'An error occurred: monthLength=0' );
             return;
@@ -229,28 +229,25 @@
             currentDate.day = monthLength;
             DisplayDateForm( );
         }
+        DisplayDateForm( );
         DisplayMonthTable( );
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function DisplayDateForm( )
     {
-        if ( requestsPending & (CurDateRqst | FirstDateRqst) != 0 )
+        if ( (requestsPending & (CurDateRqst | FirstDateRqst |
+                                 MonthLengthRqst)) != 0 )
             return;
         var i;
         var html = '';
         html += '<form name="DateForm">' +
-            '<table class="BadiDateTable">' +
-            '<tr>' +
-            '<td class="BadiWeekday">' +
             '<span class="DatePart" id="Weekday">' +
             weekdayNames[ currentDate.dayOfWeek ] +
             '</span>' +
             ', ' +
-            '</td>' +
-            '<td class="BadiDay">' +
-            '<span class="DatePart">Day: </span>' +
+            '<label for="DayList" class="DatePart">Day: </label>' +
             '<select class="DatePart" name="DayList" id="DayList">';
         for ( i = 1; i <= numDays; ++i )
         {
@@ -259,9 +256,7 @@
                 '</option>';
         }
         html += '</select>' +
-            '</td>' +
-            '<td class="BadiMonth">' +
-            '<span class="DatePart"> Month: </span>' +
+            '<label for="MonthList" class="DatePart"> Month: </label>' +
             '<select class="DatePart" name="MonthList" id="MonthList">';
         for ( i = 1; i <= numMonths; ++i )
         {
@@ -270,16 +265,7 @@
                 '</option>';
         }
         html += '</select>' +
-            '</td>' +
-            '<td rowspan="2" class="BadiChange">' +
-            '<span class="Button" id="ChangeDate">' +
-            'Change' +
-            '</span>' +
-            '</td>' +
-            '</tr>' +
-            '<tr>' +
-            '<td>' +
-            '<span class="DatePart"> Year: </span>' +
+            '<label for="YearList" class="DatePart"> Year: </label>' +
             '<select class="DatePart" name="YearList" id="YearList">';
         for ( i = 1; i <= numYears; ++i )
         {
@@ -288,19 +274,16 @@
                 '</option>';
         }
         html += '</select>' +
-            '</td>' +
-            '<td>' +
-            '<span class="DatePart"> Vahid: </span>' +
+            '<label for="VahidField" class="DatePart"> Vahid: </label>' +
             '<input type="text" class="DatePart"' +
             ' name="Vahid" id="VahidField" maxlength="2" size="2" />' +
-            '</td>' +
-            '<td>' +
-            '<span class="DatePart"> Kull-i-Shay: </span>' +
+            '<label for="KulliShayField" class="DatePart"> Kull-i-Shay: ' +
+            '</label>' +
             '<input type="text" class="DatePart"' +
             ' name="KulliShay" id="KulliShayField" maxlength="3" size="2" />' +
-            '</td>' +
-            '</tr>' +
-            '</table>' +
+            '<span class="Button" id="ChangeDate">' +
+            'Change' +
+            '</span>' +
             '</form>';
         $('#DateDiv').html( html );
 
@@ -346,10 +329,10 @@
         var year = parseInt( $('#YearList').val() );
         var vahid = parseInt( $('#VahidField').val() );
         var kulliShay = parseInt( $('#KulliShayField').val() );
-        if ( (month == currentDate.month) &&
-             (year == currentDate.year) &&
-             (vahid == currentDate.vahid) &&
-             (kulliShay == currentDate.kulliShay) )
+        if ( (month === currentDate.month) &&
+             (year === currentDate.year) &&
+             (vahid === currentDate.vahid) &&
+             (kulliShay === currentDate.kulliShay) )
             ChangeDay( day );
         else
             ChangeFullDate( day, month, year, vahid, kulliShay );
@@ -387,19 +370,19 @@
         StartNewMonth( false );
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function DisplayMonthTable( )
     {
-        if ( requestsPending & (CurDateRqst | FirstDateRqst |
-                                  MonthLengthRqst) != 0 )
+        if ( (requestsPending & (CurDateRqst | FirstDateRqst |
+                                  MonthLengthRqst)) != 0 )
             return;
         var html = '';
         var i, d;
-        html += '<table class="CalTable">' +
+        html += '<table class="MonthTable">' +
             '<thead>' +
             '<tr>' +
-            '<td colspan="' + daysInWeek + '" class="CalMonth">' +
+            '<td colspan="' + daysInWeek + '">' +
             monthNames[ currentDate.month - 1 ] +
             '</td>' +
             '</tr>' +
@@ -407,7 +390,7 @@
             '<tr>';
         for ( i = 0; i < daysInWeek; ++i )
         {
-            html += '<th class="CalWeekday">' +
+            html += '<th>' +
                 weekdayNames[i] +
                 '</th>';
         }
@@ -431,10 +414,10 @@
                     '<tr>';
                 wd = 0;
             }
-            var className = "CalDay";
-            if ( d == currentDate.day )
+            var className = "MTDay";
+            if ( d === currentDate.day )
                 className += " CurDay";
-            if ( d == today )
+            if ( d === today )
                 className += " Today";
             html += '<td class="' + className + '" id="Day' + d + '">';
             html += d;
@@ -443,7 +426,7 @@
         html += '</tr>' +
             '</tbody>' +
             '</table>';
-        $('#CalendarTableDiv').html( html );
+        $('#MonthTableDiv').html( html );
 
         for ( d = 1; d <= monthLength; ++d )
         {
@@ -462,7 +445,7 @@
     }
 
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     return theObject;
 };                                                             /*BadiCalendar*/

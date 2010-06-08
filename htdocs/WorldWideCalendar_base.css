@@ -1,0 +1,234 @@
+/*
+   WorldWideCalendar_base.css
+   Copyright © 2010 David M. Anderson
+
+   WorldWideCalendar.info Cascading Style Sheet: basics, including typography.
+*/
+
+*
+{
+    padding: 0;
+    margin: 0;
+}
+
+body,
+html
+{ 
+    width: 100%;
+    height: 100%;
+}
+
+body 
+{
+    background: #DFDFFF url(/SineBG.png) fixed;
+/*    background: #DFDFFF url(/GuideBG.png); */  /*!!!Debug*/
+    color: #000080;
+    text-align: center;
+}
+
+body
+{
+    font-family: "Helvetica",
+                 "FreeSans",
+                 "Liberation Sans",
+                 "Arial",
+                 sans-serif;
+}
+
+p,
+.Byline
+{
+    font-family: "FreeSerif",
+                 "Nimbus Roman No9 L",
+                 "Liberation Serif",
+                 "Times",
+                 "Times New Roman",
+                 serif;
+}
+
+body
+{
+    font-size: 100%;
+    line-height: 1.5;
+}
+
+/*The standard typographic sizes are
+  6, 7, 8, 9, 10, 11, 12, 14, 16, 18, 21, 24, 36, 48, 60, 72 points.
+  The sizes below match these with 1em=10pt.
+*/
+h1
+{
+    font-size: 1.8em;
+    line-height: 1.667;
+    margin-top: 1.250em;
+    margin-bottom: 0.417em;
+}
+h2
+{
+    font-size: 1.6em;
+    line-height: 1.875;
+    margin-top: 1.406em;
+    margin-bottom: 0.469em;
+}
+h3
+{
+    font-size: 1.4em;
+    line-height: 1.071;
+    margin-top: 1.606em;
+    margin-bottom: 0.535em;
+}
+h4
+{
+    font-size: 1.2em;
+    line-height: 1.25;
+    margin-top: 1.875em;
+    margin-bottom: 0.625em;
+}
+h5
+{
+    font-size: 1.1em;
+    line-height: 1.364em;
+    margin-top: 0.909em;
+    margin-bottom: 0.455em;
+}
+h6
+{
+    font-size: 1.1em;
+    line-height: 1.364em;
+    margin-top: 1.364em;
+    margin-bottom: 0;
+}
+h1+h1
+{
+    margin-top: -0.417em;
+}
+h1+h2,
+h2+h2
+{
+    margin-top: -0.469em;
+}
+h1+h3,
+h2+h3,
+h3+h3
+{
+    margin-top: -0.535em;
+}
+h1+h4,
+h2+h4,
+h3+h4,
+h4+h4
+{
+    margin-top: -0.625em;
+}
+h1+h5,
+h2+h5,
+h3+h5,
+h4+h5,
+h5+h5
+{
+    margin-top: -0.455em;
+}
+h1+h6,
+h2+h6
+{
+    margin-top: -1.364em;
+}
+h3+h6,
+h4+h6,
+h5+h6,
+h6+h6
+{
+    margin-top: -0.455em;
+    margin-bottom: 0.455em;
+}
+p,
+li
+{
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+/*Block paragraphs*/
+p,
+ul
+{
+/*    margin-top: 1.5em; */     /*match line-height*/
+/*    margin-bottom: 1.5em; */  /*  "     "    "   */
+}
+/*or Indented paragraphs*/
+p
+{
+    margin-bottom: 0;
+}
+p + p
+{
+    text-indent: 1.5em;
+    margin-top: 0;
+}
+
+blockquote
+{
+    margin: 1.5em;  /*match line-height*/
+}
+
+acronym,
+abbr,
+.Number
+{
+    letter-spacing: 0.1em;
+}
+
+p a:link 
+{
+    color: #0000EE;
+    text-decoration: none;
+}
+p a:visited 
+{ 
+    color: #551A8B;
+    text-decoration: none;
+}
+p a:hover 
+{
+    color: #EE00FF;
+    text-decoration: underline;
+}
+p a:active 
+{
+    color: #EE00FF;
+    text-decoration: none;
+}
+
+.Center 
+{
+    text-align: center;
+}
+.Left 
+{
+    text-align: left;
+}
+.Right 
+{
+    text-align: right; 
+}
+
+.MessageDiv 
+{
+    text-align: center;
+    color: #880000;
+    background-color: #DFDFFF;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1em;
+    border-color: #880000;
+    border-width: medium;
+    border-style: double;
+    padding: 1em;
+}
+
+.MajorDiv
+{
+    margin-top: 1em;
+    margin-bottom: 1em
+}
+

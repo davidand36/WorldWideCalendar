@@ -23,10 +23,6 @@
 //-----------------------------------------------------------------------------
 
     var theObject = { };
-    var calendarName = spec.name;
-    var serverURL = εδ.WWCal.app.ServerURL();
-    var errorHandler = εδ.WWCal.errorHandler;
-
     var weekdayNames = [];
     var daysInWeek = 0;
     var monthNames = [];
@@ -35,18 +31,20 @@
     var monthLength = 0;
     var requestsPending = 0;
 
+    var calendarName = spec.name;
+    var serverURL = εδ.WWCal.app.ServerURL();
+    var errorHandler = εδ.WWCal.errorHandler;
+
     var CurDateRqst = 1 << 0;
     var FirstDateRqst = 1 << 1;
     var MonthLengthRqst = 1 << 2;
     var MonthNamesRqst = 1 << 3;
     var WeekdayNamesRqst = 1 << 4;
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     theObject.Start = function( )
     {
-        requestsPending = CurDateRqst | FirstDateRqst | MonthLengthRqst |
-            MonthNamesRqst | WeekdayNamesRqst;
         GetWeekdayNames( );
         StartNewMonth( true );
     };
@@ -62,7 +60,7 @@
             StartNewMonth( true );
     };
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function Date( julianDay, day, month, year, dayOfWeek )
     {
@@ -77,7 +75,7 @@
         return theObject;
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function GetWeekdayNames( )
     {
@@ -107,7 +105,7 @@
         weekdayNames = weekdayRsp.weekdayNames;
         daysInWeek = weekdayNames.length;
         requestsPending &= ~ WeekdayNamesRqst;
-        if ( daysInWeek == 0 )
+        if ( daysInWeek === 0 )
             εδ.WWCal.errorHandler.ReportError(
                 'An error occurred: daysInWeek = 0' );
 
@@ -204,7 +202,7 @@
 
         monthNames = ajaxResponse.monthNames;
         requestsPending &= ~ MonthNamesRqst;
-        if ( monthNames.length == 0 )
+        if ( monthNames.length === 0 )
         {
             εδ.WWCal.app.ReportError(
                 'An error occurred: monthNames.length = 0' );
@@ -245,6 +243,7 @@
         firstDate = Date( dateRsp.julianDay, dateRsp.day, dateRsp.month,
                           dateRsp.year, dateRsp.dayOfWeek );
         requestsPending &= ~ FirstDateRqst;
+        DisplayDateForm( );
         DisplayMonthTable( );
     }
 
@@ -276,7 +275,7 @@
 
         monthLength = ajaxResponse.monthLength;
         requestsPending &= ~ MonthLengthRqst;
-        if ( monthLength == 0 )
+        if ( monthLength === 0 )
         {
             εδ.WWCal.errorHandler.ReportError(
                 'An error occurred: monthLength=0' );
@@ -285,23 +284,22 @@
         if ( currentDate.day > monthLength )
         {
             currentDate.day = monthLength;
-            DisplayDateForm( );
         }
+        DisplayDateForm( );
         DisplayMonthTable( );
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function DisplayDateForm( )
     {
-        if ( requestsPending &
-             (CurDateRqst | FirstDateRqst | MonthNamesRqst |
-              WeekdayNamesRqst) != 0 )
+        if ( (requestsPending &
+             (CurDateRqst | FirstDateRqst | MonthNamesRqst | WeekdayNamesRqst |
+              MonthLengthRqst)) != 0 )
             return;
         var html = '';
         html += '<form name="DateForm">' +
             '<span class="DatePart" id="Weekday">' +
-            weekdayNames[ currentDate.dayOfWeek ] +
             '</span>' +
             ', ' +
             '<input type="text" class="DatePart" name="Day" id="DayField"' +
@@ -322,6 +320,7 @@
             '</form>';
         $('#DateDiv').html( html );
 
+        $('#Weekday').html( weekdayNames[ currentDate.dayOfWeek ] );
         $('#DayField').val( currentDate.day );
         $('#MonthList').val( currentDate.month );
         $('#YearField').val( currentDate.year );
@@ -359,8 +358,8 @@
         var day = parseInt( $('#DayField').val() );
         var month = parseInt( $('#MonthList').val() );
         var year = parseInt( $('#YearField').val() );
-        if ( (month == currentDate.month) &&
-             (year == currentDate.year) )
+        if ( (month === currentDate.month) &&
+             (year === currentDate.year) )
             ChangeDay( day );
         else
             ChangeFullDate( day, month, year );
@@ -396,21 +395,21 @@
         StartNewMonth( false );
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function DisplayMonthTable( )
     {
-        if ( requestsPending & (CurDateRqst | FirstDateRqst |
-                                     MonthNamesRqst | MonthLengthRqst |
-                                     WeekdayNamesRqst) != 0 )
+        if ( (requestsPending & (CurDateRqst | FirstDateRqst |
+                                 MonthNamesRqst | MonthLengthRqst |
+                                 WeekdayNamesRqst)) != 0 )
             return;
 
         var i, d;
         var html = '';
-        html += '<table class="CalTable">' +
+        html += '<table class="MonthTable">' +
             '<thead>' +
             '<tr>' +
-            '<td colspan="' + daysInWeek + '" class="CalMonth">' +
+            '<td colspan="' + daysInWeek + '">' +
             monthNames[ currentDate.month - 1 ] +
             ' ' + currentDate.year +
             '</td>' +
@@ -419,7 +418,7 @@
         html += '<tr>';
         for ( i = 0; i < daysInWeek; ++i )
         {
-            html += '<th class="CalWeekday">' +
+            html += '<th>' +
                 weekdayNames[i] +
                 '</th>';
         }
@@ -443,10 +442,10 @@
                     '<tr>';
                 wd = 0;
             }
-            var className = 'CalDay';
-            if ( d == currentDate.day )
+            var className = 'MTDay';
+            if ( d === currentDate.day )
                 className += ' CurDay';
-            if ( d == today )
+            if ( d === today )
                 className += ' Today';
             html += '<td class="' + className + '" id="Day' + d + '">';
             html += d;
@@ -455,7 +454,7 @@
         html += '</tr>' +
             '</tbody>' +
             '</table>';
-        $('#CalendarTableDiv').html( html );
+        $('#MonthTableDiv').html( html );
 
         for ( d = 1; d <= monthLength; ++d )
         {
@@ -473,7 +472,7 @@
         return false;
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     return theObject;
 

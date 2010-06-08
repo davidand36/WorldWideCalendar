@@ -1,10 +1,10 @@
-#ifndef MAYANCALENDARSERVICE_HPP
-#define MAYANCALENDARSERVICE_HPP
+#ifndef CHINESECALENDARSERVICE_HPP
+#define CHINESECALENDARSERVICE_HPP
 /*
-  MayanCalendarService.hpp
+  ChineseCalendarService.hpp
   Copyright © 2010 David M. Anderson
 
-  MayanCalendarService class: Web service for the Mayan calendar.
+  ChineseCalendarService class: Web service for the Chinese calendar.
 */
 
 
@@ -18,7 +18,7 @@ namespace EpsilonDelta
 //*****************************************************************************
 
 
-class MayanCalendarService
+class ChineseCalendarService
 {
 public:
     static std::string Respond( CalendarService::Action action,
@@ -32,8 +32,10 @@ private:
                                  CalendarService::Format format );
     static std::string Names( std::string calendarName,
                               CalendarService::Format format );
-    static std::string HaabMonthLength( std::string calendarName,
-                                        CalendarService::Format format );
+    static std::string MonthLength( std::string calendarName,
+                                    CalendarService::Format format );
+    static std::string SolarTerms( std::string calendarName,
+                                   CalendarService::Format format );
 };
 
 
@@ -41,4 +43,4 @@ private:
 
 }                                                      //namespace EpsilonDelta
 
-#endif //MAYANCALENDARSERVICE_HPP
+#endif //CHINESECALENDARSERVICE_HPP

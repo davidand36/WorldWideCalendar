@@ -9,7 +9,7 @@
 #include "CalendarService.hpp"
 #include "CalendarDMYWService.hpp"
 #include "MayanCalendarService.hpp"
-//#include "ChineseCalendarService.hpp"
+#include "ChineseCalendarService.hpp"
 //#include "OldHinduLunisolarCalendarService.hpp"
 //#include "HinduLunisolarCalendarService.hpp"
 //#include "FrenchRevolutionaryCalendarService.hpp"
@@ -62,7 +62,7 @@ enum Calendar
 {
     Egyptian,
     Mayan,
-//    Chinese,
+    Chinese,
     Armenian,
     Julian,
     Coptic,
@@ -87,7 +87,7 @@ const std::tr1::array< string, NumCalendars > s_calendarNames
 = { {
     "Egyptian",
     "Mayan",
-//    "Chinese",
+    "Chinese",
     "Armenian",
     "Julian",
     "Coptic",
@@ -115,7 +115,8 @@ const std::tr1::array< string, CalendarService::NumActions > s_actionNames
     "Names",
     "WeekdayNames",
     "MonthNames",
-    "MonthLength"
+    "MonthLength",
+    "SolarTerms"
 };
 
 const std::tr1::array< string, CalendarService::NumFormats > s_formatNames
@@ -272,9 +273,9 @@ WriteHttpResponse( )
     case Mayan:
         return MayanCalendarService::
                 Respond( s_action, s_calendarName, s_format );
-//    case Chinese:
-//        return ChineseCalendarService::
-//                Respond( s_action, s_calendarName, s_format );
+    case Chinese:
+        return ChineseCalendarService::
+                Respond( s_action, s_calendarName, s_format );
     case Armenian:
         return CalendarDMYWService< ArmenianCalendar, ArmenianWeek >::
                 Respond( s_action, s_calendarName, s_format );

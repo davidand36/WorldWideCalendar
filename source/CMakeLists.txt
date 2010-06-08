@@ -8,8 +8,9 @@
 
 set( sources
      WorldWideCalendar.cpp
-     BadiCalendarService.cpp
      MayanCalendarService.cpp
+     ChineseCalendarService.cpp
+     BadiCalendarService.cpp
    )
 
 set( EpsilonDeltaLibs

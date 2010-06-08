@@ -192,7 +192,6 @@ std::string
 CalendarDMYWService< C, W >::MonthLength( std::string calendarName,
                                           CalendarService::Format format )
 {
-    std::vector< std::string > monthNames;
     CGIInput & cgiInput = CGIInput::Instance();
     int month = std::atoi( cgiInput[ "month" ].c_str() );
     int year = std::atoi( cgiInput[ "year" ].c_str() );

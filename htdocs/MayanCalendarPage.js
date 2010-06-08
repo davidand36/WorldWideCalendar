@@ -22,12 +22,12 @@
 //-----------------------------------------------------------------------------
 
     var theObject = { };
-    var calendarName = 'Mayan';
-    var errorHandler = εδ.WWCal.errorHandler;
-
     var currentLongCount = LongCount( 0, 0, 0, 0, 0, 0, 0 );
     var currentHaab = Haab( 0, 0, 0 );
     var zerothHaabJD = 0;
+
+    var calendarName = 'Mayan';
+    var errorHandler = εδ.WWCal.errorHandler;
 
     var longCountEpoch = 584283;
     var haabEpoch = 583935;
@@ -40,7 +40,7 @@
                                  "Chuen", "Eb", "Ben", "Ix", "Men", "Cib",
                                  "Caban", "Etznab", "Cauac", "Ahau" ];
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     theObject.Start = function( )
     {
@@ -56,7 +56,7 @@
         UpdateTzolkin( );
     };
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function LongCount( kin, uinal, tun, katun, baktun,
                         pictun, calabtun, kinchiltun, alautun )
@@ -168,77 +168,111 @@
         return (haabMonth < 19)  ?  20  :  5;
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function DisplayDateForms( )
     {
         var html = '';
         html += '<form name="LongCountForm">' +
-            '<table>' +
+            '<table class="MayanLongCount">' +
             '<tr>' +
-            '<td class="DatePart">alautun</td>' +
-            '<td class="DatePart">kinchiltun</td>' +
-            '<td class="DatePart">calabtun</td>' +
-            '<td class="DatePart">pictun</td>' +
-            '<td class="DatePart">baktun</td>' +
-            '<td class="DatePart">katun</td>' +
-            '<td class="DatePart">tun</td>' +
-            '<td class="DatePart">uinal</td>' +
-            '<td class="DatePart">kin</td>' +
+            '<td>' +
+            '<label for="AlautunField" class="DatePart">alautun</label>' +
+            '</td>' +
+            '<td class="Dot"></td>' +
+            '<td>' +
+            '<label for="KinchiltunField" class="DatePart">kinchiltun</label>' +
+            '</td>' +
+            '<td class="Dot"></td>' +
+            '<td>' +
+            '<label for="CalabtunField" class="DatePart">calabtun</label>' +
+            '</td>' +
+            '<td class="Dot"></td>' +
+            '<td>' +
+            '<label for="PictunField" class="DatePart">pictun</label>' +
+            '</td>' +
+            '<td class="Dot"></td>' +
+            '<td>' +
+            '<label for="BaktunField" class="DatePart">baktun</label>' +
+            '</td>' +
+            '<td class="Dot"></td>' +
+            '<td>' +
+            '<label for="KatunField" class="DatePart">katun</label>' +
+            '</td>' +
+            '<td class="Dot"></td>' +
+            '<td>' +
+            '<label for="TunField" class="DatePart">tun</label>' +
+            '</td>' +
+            '<td class="Dot"></td>' +
+            '<td>' +
+            '<label for="UinalField" class="DatePart">uinal</label>' +
+            '</td>' +
+            '<td class="Dot"></td>' +
+            '<td>' +
+            '<label for="KinField" class="DatePart">kin</label>' +
+            '</td>' +
             '<td rowspan="2">' +
             '<span class="Button" id="ChangeLongCount">' +
             'Change' +
             '</span>' +
             '</td>' +
             '</tr>' +
-            '<tr class="DatePart">' +
+            '<tr>' +
             '<td>' +
             '<input type="text" name="Alautun"' +
             ' class="DatePart" id="AlautunField"' +
             ' maxlength="2" size="2" />' +
-            '.' +
+            '</td>' +
+            '<td class="Dot"><span class="DatePart">.</span></td>' +
             '</td>' +
             '<td>' +
             '<input type="text" name="Kinchiltun"' +
             ' class="DatePart" id="KinchiltunField"' +
             ' maxlength="2" size="2" />' +
-            '.' +
+            '</td>' +
+            '<td class="Dot"><span class="DatePart">.</span></td>' +
             '</td>' +
             '<td>' +
             '<input type="text" name="Calabtun"' +
             ' class="DatePart" id="CalabtunField"' +
             ' maxlength="2" size="2" />' +
-            '.' +
+            '</td>' +
+            '<td class="Dot"><span class="DatePart">.</span></td>' +
             '</td>' +
             '<td>' +
             '<input type="text" name="Pictun"' +
             ' class="DatePart" id="PictunField"' +
             ' maxlength="2" size="2" />' +
-            '.' +
+            '</td>' +
+            '<td class="Dot"><span class="DatePart">.</span></td>' +
             '</td>' +
             '<td>' +
             '<input type="text" name="Baktun"' +
             ' class="DatePart" id="BaktunField"' +
             ' maxlength="2" size="2" />' +
-            '.' +
+            '</td>' +
+            '<td class="Dot"><span class="DatePart">.</span></td>' +
             '</td>' +
             '<td>' +
             '<input type="text" name="Katun"' +
             ' class="DatePart" id="KatunField"' +
             ' maxlength="2" size="2" />' +
-            '.' +
+            '</td>' +
+            '<td class="Dot"><span class="DatePart">.</span></td>' +
             '</td>' +
             '<td>' +
             '<input type="text" name="Tun"' +
             ' class="DatePart" id="TunField"' +
             ' maxlength="2" size="2" />' +
-            '.' +
+            '</td>' +
+            '<td class="Dot"><span class="DatePart">.</span></td>' +
             '</td>' +
             '<td>' +
             '<input type="text" name="Uinal"' +
             ' class="DatePart" id="UinalField"' +
             ' maxlength="2" size="2" />' +
-            '.' +
+            '</td>' +
+            '<td class="Dot"><span class="DatePart">.</span></td>' +
             '</td>' +
             '<td>' +
             '<input type="text" name="Kin"' +
@@ -247,6 +281,7 @@
             '</td>' +
             '</tr>' +
             '</table>' +
+
             '</form>' +
             '<form name="HaabForm">' +
             '<span class="DatePart">Haab: </span>' +
@@ -254,6 +289,7 @@
             ' ' +
             '<span class="DatePart" id="HaabMonthField"></span>' +
             '</form>' +
+
             '<form name="TzolkinForm">' +
             '<span class="DatePart">Tzolkin: </span>' +
             '<span class="DatePart" id="TzolkinTrecenaField"></span>' +
@@ -263,6 +299,7 @@
         $('#DateDiv').html( html );
 
         UpdateLongCount( );
+        currentHaab.month = -1; //to force DisplayMonthTable
         UpdateHaab( );
         UpdateTzolkin( );
 
@@ -388,7 +425,7 @@
             tzolkinVeintenaNames[ tzolkin.veintena - 1 ] );
     }
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     function DisplayMonthTable( )
     {
@@ -396,10 +433,10 @@
         var monthLength = HaabMonthLength( currentHaab.month );
         var html = '';
         var i, d;
-        html += '<table class="CalTable">' +
+        html += '<table class="MonthTable">' +
             '<thead>' +
             '<tr>' +
-            '<td colspan="' + daysInWeek + '" class="CalMonth">' +
+            '<td colspan="' + daysInWeek + '">' +
             haabMonthNames[ currentHaab.month - 1 ] +
             '</td>' +
             '</tr>' +
@@ -416,10 +453,10 @@
                     '<tr>';
                 wd = 0;
             }
-            var className = "CalDay";
-            if ( d == currentHaab.day )
+            var className = "MTDay";
+            if ( d === currentHaab.day )
                 className += " CurDay";
-            if ( d == today )
+            if ( d === today )
                 className += " Today";
             html += '<td class="' + className + '" id="Day' + d + '">';
             html += d;
@@ -428,7 +465,7 @@
         html += '</tr>' +
             '</tbody>' +
             '</table>';
-        $('#CalendarTableDiv').html( html );
+        $('#MonthTableDiv').html( html );
 
         for ( d = 0; d < monthLength; ++d )
         {
@@ -447,7 +484,7 @@
     }
 
 
-//-----------------------------------------------------------------------------
+//=============================================================================
 
     return theObject;
 };                                                            /*MayanCalendar*/

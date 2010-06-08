@@ -2,7 +2,7 @@
   MayanCalendarService.cpp
   Copyright © 2010 David M. Anderson
 
-  MayanCalendarService template class: Web service for the Mayan calendar.
+  MayanCalendarService class: Web service for the Mayan calendar.
 */
 
 

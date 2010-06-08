@@ -3,28 +3,33 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" type="text/css" href="wwwcal.css" />
+    <link rel="stylesheet" type="text/css" href="WorldWideCalendar_base.css" />
+    <link rel="stylesheet" type="text/css" href="WorldWideCalendar_ui.css" />
+    <link rel="stylesheet" type="text/css" href="WorldWideCalendar_forms.css" />
+    <link rel="stylesheet" type="text/css" href="WorldWideCalendar_table.css" />
     <meta http-equiv="Content-Script-Type" Content="text/javascript" />
     <script src="/jslib/jquery.js"></script>
     <script src="EpsilonDelta.js"></script>
     <script src="WorldWideCalendar.js"></script>
     <script src="DMYWCalendarPage.js"></script> 
     <script src="MayanCalendarPage.js"></script>
+    <script src="ChineseCalendarPage.js"></script>
     <script src="BadiCalendarPage.js"></script>
     <title>World-Wide Calendar</title>
   </head>
 
-  <body>
+  <body class="WWCal">
     <h1 id="Title">World-Wide Calendar</h1>
-    <div id="ErrorMessageDiv" class="MessageDiv"></div>
-    <div id="CalendarMenuDiv" class="FormDiv"></div>
-    <div id="DateDiv" class="FormDiv"></div>
-    <div id="JulianDayDiv" class="FormDiv"></div>
-    <div id="TodayDiv" class="FormDiv"></div>
-    <div id="CalendarTableDiv" class="CalTableDiv"></div>
-    <div id="AboutCalDiv" class="AboutDiv"></div>
-    <div id="HolidaysDiv" class="HolidayDiv"></div>
-    <div id="AboutSiteDiv" class="AboutDiv"></div>
+    <div id="ErrorMessageDiv" class="MajorDiv MessageDiv"></div>
+    <div id="CalendarPageDiv" class="CalendarPageDiv">
+      <div id="CalendarMenuDiv" class="MajorDiv"></div>
+      <div id="DateDiv" class="MajorDiv"></div>
+      <div id="JulianDayDiv" class="MajorDiv"></div>
+      <div id="TodayDiv" class="MajorDiv"></div>
+      <div id="MonthTableDiv" class="MajorDiv"></div>
+      <div id="AboutCalDiv" class="MajorDiv"></div>
+      <div id="HolidaysDiv" class="MajorDiv"></div>
+    </div>
     <div id="BylineDiv" class="Byline">
       Copyright &copy; 2005-2010 David M. Anderson
     </div>

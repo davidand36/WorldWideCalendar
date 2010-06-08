@@ -26,6 +26,7 @@ enum Action
     WeekdayNames,
     MonthNames,
     MonthLength,
+    SolarTerms,
     NumActions
 };
 

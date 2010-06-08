@@ -1,0 +1,101 @@
+/*
+   WorldWideCalendar_columns.css
+   Copyright © 2010 David M. Anderson
+
+   WorldWideCalendar.info Cascading Style Sheet: column layouts.
+*/
+
+/*
+   ColumnSet12: Two columns, main on left.
+   Uses the following values for the content width,
+   left "padding", right "padding", and full column width:
+                        CW  +  LP  +  RP  =  FW
+   Col1 (Main)          32em   2em    2em    36em
+   Col2 (Side)          22em   1em    1em    24em
+*/
+
+div.ColumnSet12 div.Col1BG
+{
+    position: relative;
+    float: left;
+    clear: both;
+    width: 100%;
+    overflow: hidden;
+    background: #DFDFFF; /*Col1*/
+}
+
+div.ColumnSet12 div.Col2BG
+{
+    position: relative;
+    float: left;
+    width: 100%;
+    left: 36em;  /*FW1*/
+    background: #DFDFFF url(/SineBG.png) fixed; /*Col2*/
+}
+
+div.ColumnSet12 div.MainColumn
+{
+    position: relative;
+    float: left;
+    width: 32em;  /*CW1*/
+    right: 34em;   /*FW1 - LP1*/
+    padding-bottom: 1em;
+}
+
+div.ColumnSet12 div.SideColumn
+{
+    position: relative;
+    float: left;
+    width: 22em;  /*CW2*/
+    right: 31em;  /*CW1 - LP2*/
+    padding-bottom: 1em;
+}
+
+
+/*
+   ColumnSet21: Two columns, main on right.
+   Uses the following values for the content width,
+   left "padding", right "padding", and full column width:
+                        CW  +  LP  +  RP  =  FW
+   Col1 (Side)          22em   1em    1em    24em
+   Col2 (Main)          32em   2em    2em    36em
+*/
+
+div.ColumnSet21 div.Col1BG
+{
+    position: relative;
+    float: left;
+    clear: both;
+    width: 100%;
+    overflow: hidden;
+    background: #DFDFFF url(/SineBG.png) fixed; /*Col1*/
+}
+
+div.ColumnSet21 div.Col2BG
+{
+    position: relative;
+    float: left;
+    width: 100%;
+    left: 24em;  /*FW1*/
+    background: #DFDFFF; /*Col2*/
+}
+
+div.ColumnSet21 div.MainColumn
+{
+    position: relative;
+    float: left;
+    width: 32em;  /*CW1*/
+    left: 2em;    /*LP2*/
+    padding-bottom: 1em;
+}
+
+div.ColumnSet21 div.SideColumn
+{
+    position: relative;
+    float: left;
+    width: 22em;  /*CW2*/
+    right: 55em;  /*FW1 + CW2 - LP1*/
+    padding-bottom: 1em;
+}
+
+
