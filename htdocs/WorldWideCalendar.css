@@ -2,8 +2,10 @@
    WorldWideCalendar_base.css
    Copyright © 2010 David M. Anderson
 
-   WorldWideCalendar.info Cascading Style Sheet: basics, including typography.
+   WorldWideCalendar.info Cascading Style Sheet
 */
+
+/*== Basics =================================================================*/
 
 *
 {
@@ -18,13 +20,21 @@ html
     height: 100%;
 }
 
+body
+{
+    text-align: center;
+}
+
+/*== Background =============================================================*/
+
 body 
 {
     background: #DFDFFF url(/SineBG.png) fixed;
 /*    background: #DFDFFF url(/GuideBG.png); */  /*!!!Debug*/
     color: #000080;
-    text-align: center;
 }
+
+/*== Typography =============================================================*/
 
 body
 {
@@ -178,6 +188,8 @@ abbr,
     letter-spacing: 0.1em;
 }
 
+/*== Links ==================================================================*/
+
 p a:link 
 {
     color: #0000EE;
@@ -199,6 +211,8 @@ p a:active
     text-decoration: none;
 }
 
+/*== Explicit position (rarely necessary) ==================================*/
+
 .Center 
 {
     text-align: center;
@@ -211,6 +225,8 @@ p a:active
 {
     text-align: right; 
 }
+
+/*== Major divisions ========================================================*/
 
 .MessageDiv 
 {
@@ -230,5 +246,134 @@ p a:active
 {
     margin-top: 1em;
     margin-bottom: 1em
+}
+
+table 
+{
+    margin-left: auto;
+    margin-right:auto;
+}
+
+/*== Forms and user-interface elements ======================================*/
+
+input
+{
+    text-align: center;
+}
+select
+{
+    text-align: center;
+}
+
+label
+{
+    margin-left: 1em;
+}
+
+.Button
+{
+    color: #EEEEEE;
+    background-color: #003366;
+    border-color: #DFDFFF;
+    border-width: medium;
+    border-style: outset;
+    border-radius: 0.75em;
+    -moz-border-radius: 0.75em;
+    -webkit-border-radius: 0.75em;
+    padding: 0.25em 1em;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.25em 1em;
+    margin: 0.25em 1em
+}
+
+.Button:hover, 
+.Button:active
+{ 
+    color: #FFFFFF;
+    background-color: #336699;
+    border-style: inset;
+}
+
+form div.ButtonGroup
+{
+    text-align: center;
+}
+
+.DatePart
+{
+    font-weight: bold;
+}
+.DatePart2
+{
+    font-weight: normal;
+}
+
+table.MayanLongCount td
+{
+    width: 4.5em;
+}
+table.MayanLongCount td.Dot
+{
+    width: 0;
+}
+table.MayanLongCount label
+{
+    margin-left: 0;
+}
+
+td.ChineseDay
+{
+    width: 12em;
+}
+td.ChineseMonth
+{
+    width: 14em;
+}
+td.ChineseYear
+{
+    width: 16em;
+}
+
+/*== Month table ============================================================*/
+
+table.MonthTable thead td
+{
+    height: 2em;
+    background-color: #FFFFFF;
+    border-style: double;
+    font-weight: bold;
+}
+table.MonthTable th
+{
+    width: 8.5em;
+    height: 2em;
+    background-color: #FFFFFF;
+    border-style: double;
+    font-weight: bold;
+}
+td.MTDay
+{
+    vertical-align: middle;
+    width: 8.5em;
+    height: 3em;
+    background-color: #FFFFFF;
+    border-style: solid;
+    border-width: thin;
+}
+td.MTDay.CurDay
+{
+    border-width: medium;
+}
+td.MTDay.Today
+{
+    font-weight: bold;
+    background-color: #DFDFFF
+}
+
+table.MonthTable.Cols10 th,
+table.MonthTable.Cols10 td.MTDay
+{
+    width: 5.5em;
 }
 
