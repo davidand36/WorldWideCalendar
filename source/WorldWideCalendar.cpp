@@ -10,7 +10,6 @@
 #include "CalendarDMYWService.hpp"
 #include "MayanCalendarService.hpp"
 #include "ChineseCalendarService.hpp"
-//#include "OldHinduLunisolarCalendarService.hpp"
 //#include "HinduLunisolarCalendarService.hpp"
 //#include "FrenchRevolutionaryCalendarService.hpp"
 #include "BadiCalendarService.hpp"
@@ -31,13 +30,11 @@
 #include <EthiopianWeek.hpp>
 #include <HebrewCalendar.hpp>
 #include <HebrewWeek.hpp>
-#include <OldHinduSolarCalendar.hpp>
 #include <HinduWeek.hpp>
 #include <IslamicCalendar.hpp>
 #include <IslamicWeek.hpp>
 #include <HinduSolarCalendar.hpp>
-#include <PersianAstronomicalCalendar.hpp>
-#include <PersianArithmeticCalendar.hpp>
+#include <PersianCalendar.hpp>
 #include <PersianWeek.hpp>
 #include <GregorianCalendar.hpp>
 #include <BahaiCalendar.hpp>
@@ -68,13 +65,10 @@ enum Calendar
     Coptic,
     Ethiopian,
     Hebrew,
-    OldHinduSolar,
-//    OldHinduLunisolar,
-    Islamic,
     HinduSolar,
 //    HinduLunisolar,
-    PersianAstronomical,
-    PersianArithmetic,
+    Islamic,
+    Persian,
     Gregorian,
 //    FrenchRevolutionary,
     Bahai,
@@ -93,13 +87,10 @@ const std::tr1::array< string, NumCalendars > s_calendarNames
     "Coptic",
     "Ethiopian",
     "Hebrew",
-    "Old Hindu solar",
-//    "Old Hindu lunisolar",
-    "Islamic",
     "Hindu solar",
 //    "Hindu lunisolar",
-    "Persian astronomical",
-    "Persian arithmetic",
+    "Islamic",
+    "Persian",
     "Gregorian",
 //    "French Revolutionary",
     "Bahai",
@@ -256,6 +247,8 @@ GetCgiGlobals( )
 string
 WriteHttpResponse( )
 {
+    const CGIInput & cgiInput = CGIInput::Instance();
+
     if ( s_action == CalendarService::ListCalendars )
         switch ( s_format )
         {
@@ -291,26 +284,17 @@ WriteHttpResponse( )
     case Hebrew:
         return CalendarDMYWService< HebrewCalendar, HebrewWeek >::
                 Respond( s_action, s_calendarName, s_format );
-    case OldHinduSolar:
-        return CalendarDMYWService< OldHinduSolarCalendar, HinduWeek >::
-                Respond( s_action, s_calendarName, s_format );
-//    case OldHinduLunisolar:
-//        return OldHinduLunisolarCalendarService::
-//                Respond( s_action, s_calendarName, s_format );
-    case Islamic:
-        return CalendarDMYWService< IslamicCalendar, IslamicWeek >::
-                Respond( s_action, s_calendarName, s_format );
     case HinduSolar:
         return CalendarDMYWService< HinduSolarCalendar, HinduWeek >::
                 Respond( s_action, s_calendarName, s_format );
 //    case HinduLunisolar:
-//        return HinduLunisolarCalendarService::
+//        return CalendarDMYWService< HinduLunisolarCalendar, HinduWeek >::
 //                Respond( s_action, s_calendarName, s_format );
-    case PersianAstronomical:
-        return CalendarDMYWService< PersianAstronomicalCalendar, PersianWeek >::
+    case Islamic:
+        return CalendarDMYWService< IslamicCalendar, IslamicWeek >::
                 Respond( s_action, s_calendarName, s_format );
-    case PersianArithmetic:
-        return CalendarDMYWService< PersianArithmeticCalendar, PersianWeek >::
+    case Persian:
+        return CalendarDMYWService< PersianCalendar, PersianWeek >::
                 Respond( s_action, s_calendarName, s_format );
     case Gregorian:
         return CalendarDMYWService< GregorianCalendar, WesternWeek >::
