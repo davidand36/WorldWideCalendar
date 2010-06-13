@@ -11,6 +11,7 @@ set( sources
      MayanCalendarService.cpp
      ChineseCalendarService.cpp
      BadiCalendarService.cpp
+     HinduSolarOptions.cpp
    )
 
 set( EpsilonDeltaLibs

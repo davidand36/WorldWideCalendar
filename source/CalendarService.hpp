@@ -27,6 +27,7 @@ enum Action
     MonthNames,
     MonthLength,
     SolarTerms,
+    AvailableOptions,
     NumActions
 };
 

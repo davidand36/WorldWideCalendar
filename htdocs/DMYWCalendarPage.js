@@ -1,7 +1,7 @@
 /*
     DMYWCalendarPage.js
     David M. Anderson
-    wwwCalendar
+    WorldWideCalendar.info
 
     DMYWCalendarPage "class": manages display of, and interaction with, Web
     calendar page for Day/Month/Year/Week calendars (i.e., most of the
@@ -32,6 +32,7 @@
     var requestsPending = 0;
 
     var calendarName = spec.name;
+    var options = spec.options;
     var serverURL = εδ.WWCal.app.ServerURL();
     var errorHandler = εδ.WWCal.errorHandler;
 
@@ -40,11 +41,13 @@
     var MonthLengthRqst = 1 << 2;
     var MonthNamesRqst = 1 << 3;
     var WeekdayNamesRqst = 1 << 4;
+    var AvailableOptionsRqst = 1 << 5;
 
 //=============================================================================
 
     theObject.Start = function( )
     {
+        GetAvailableOptions( );
         GetWeekdayNames( );
         StartNewMonth( true );
     };
@@ -77,17 +80,51 @@
 
 //=============================================================================
 
+    function GetAvailableOptions( )
+    {
+        if ( options && ! options.HaveOptions() )
+        {
+            var ajaxData
+                = {
+                    action: 'AvailableOptions',
+                    calendar: calendarName,
+                    format: 'JSON'
+                };
+            $.getJSON( serverURL, ajaxData, ProcessAvailableOptions );
+            requestsPending |= AvailableOptionsRqst;
+        }
+    }
+
+//.............................................................................
+
+    function ProcessAvailableOptions( ajaxResponse )
+    {
+        if ( ajaxResponse.Error )
+        {
+            errorHandler.ReportError( ajaxResponse.Error );
+            return;
+        }
+
+        if ( options )
+            options.ProcessAvailableOptions( ajaxResponse );
+        requestsPending &= ~ AvailableOptionsRqst;
+    }
+
+//=============================================================================
+
     function GetWeekdayNames( )
     {
         if ( daysInWeek > 0 )
             return;
-        $.getJSON( serverURL,
-                   {
-                       action: 'WeekdayNames',
-                       calendar: calendarName,
-                       format: 'JSON'
-                   },
-                   ProcessWeekdayNames );
+        var ajaxData
+            = {
+                action: 'WeekdayNames',
+                calendar: calendarName,
+                format: 'JSON'
+            };
+        if ( options )
+            options.AddAjaxData( ajaxData );
+        $.getJSON( serverURL, ajaxData, ProcessWeekdayNames );
         requestsPending |= WeekdayNamesRqst;
     }
 
@@ -127,14 +164,16 @@
 
     function GetCurrentDate( )
     {
-        $.getJSON( serverURL,
-                   {
-                       action: 'JDToDate',
-                       calendar: calendarName,
-                       julianDay: εδ.WWCal.app.CurrentJulianDay(),
-                       format: 'JSON'
-                   },
-                   ProcessCurrentDate );
+        var ajaxData
+            = {
+                action: 'JDToDate',
+                calendar: calendarName,
+                julianDay: εδ.WWCal.app.CurrentJulianDay(),
+                format: 'JSON'
+            };
+        if ( options )
+            options.AddAjaxData( ajaxData );
+        $.getJSON( serverURL, ajaxData, ProcessCurrentDate );
         requestsPending |= CurDateRqst;
     }
 
@@ -142,16 +181,18 @@
 
     function GetCurrentJD( )
     {
-        $.getJSON( serverURL,
-                   {
-                       action: 'DateToJD',
-                       calendar: calendarName,
-                       day: currentDate.day,
-                       month: currentDate.month,
-                       year: currentDate.year,
-                       format: 'JSON'
-                   },
-                   ProcessCurrentDate );
+        var ajaxData
+            = {
+                action: 'DateToJD',
+                calendar: calendarName,
+                day: currentDate.day,
+                month: currentDate.month,
+                year: currentDate.year,
+                format: 'JSON'
+            };
+        if ( options )
+            options.AddAjaxData( ajaxData );
+        $.getJSON( serverURL, ajaxData, ProcessCurrentDate );
         requestsPending |= CurDateRqst;
     }
 
@@ -179,14 +220,16 @@
 
     function GetMonthNames( )
     {
-        $.getJSON( serverURL,
-                   {
-                       action: 'MonthNames',
-                       calendar: calendarName,
-                       year: currentDate.year,
-                       format: 'JSON'
-                   },
-                   ProcessMonthNames );
+        var ajaxData
+            = {
+                action: 'MonthNames',
+                calendar: calendarName,
+                year: currentDate.year,
+                format: 'JSON'
+            };
+        if ( options )
+            options.AddAjaxData( ajaxData );
+        $.getJSON( serverURL, ajaxData, ProcessMonthNames );
         requestsPending |= MonthNamesRqst;
     }
 
@@ -216,16 +259,18 @@
 
     function GetFirstDate( )
     {
-        $.getJSON( serverURL,
-                   {
-                       action: 'DateToJD',
-                       calendar: calendarName,
-                       day: 1,
-                       month: currentDate.month,
-                       year: currentDate.year,
-                       format: 'JSON'
-                   },
-                   ProcessFirstDate );
+        var ajaxData
+            = {
+                action: 'DateToJD',
+                calendar: calendarName,
+                day: 1,
+                month: currentDate.month,
+                year: currentDate.year,
+                format: 'JSON'
+            };
+        if ( options )
+            options.AddAjaxData( ajaxData );
+        $.getJSON( serverURL, ajaxData, ProcessFirstDate );
         requestsPending |= FirstDateRqst;
     }
 
@@ -251,15 +296,17 @@
 
     function GetMonthLength( )
     {
-        $.getJSON( serverURL,
-                   {
-                       action: 'MonthLength',
-                       calendar: calendarName,
-                       month: currentDate.month,
-                       year: currentDate.year,
-                       format: 'JSON'
-                   },
-                   ProcessMonthLength );
+        var ajaxData
+            = {
+                action: 'MonthLength',
+                calendar: calendarName,
+                month: currentDate.month,
+                year: currentDate.year,
+                format: 'JSON'
+            };
+        if ( options )
+            options.AddAjaxData( ajaxData );
+        $.getJSON( serverURL, ajaxData, ProcessMonthLength );
         requestsPending |= MonthLengthRqst;
     }
 
@@ -299,6 +346,11 @@
             return;
         var html = '';
         html += '<form name="DateForm">' +
+            '<div>';
+        if ( options )
+            html += options.WriteFormHtml( );
+        html += '</div>' +
+            '<div>' +
             '<span class="DatePart" id="Weekday">' +
             '</span>' +
             ', ' +
@@ -317,9 +369,12 @@
             '<span class="Button" id="ChangeDate">' +
             'Change' +
             '</span>' +
+            '</div>' +
             '</form>';
         $('#DateDiv').html( html );
 
+        if ( options )
+            options.UpdateForm( );
         $('#Weekday').html( weekdayNames[ currentDate.dayOfWeek ] );
         $('#DayField').val( currentDate.day );
         $('#MonthList').val( currentDate.month );
@@ -355,11 +410,15 @@
 
     function ChangeDate( )
     {
+        var optionsChanged = false;
+        if ( options )
+            optionsChanged = options.HasFormChanged( );
         var day = parseInt( $('#DayField').val() );
         var month = parseInt( $('#MonthList').val() );
         var year = parseInt( $('#YearField').val() );
         if ( (month === currentDate.month) &&
-             (year === currentDate.year) )
+             (year === currentDate.year) &&
+             ! optionsChanged )
             ChangeDay( day );
         else
             ChangeFullDate( day, month, year );
@@ -389,6 +448,8 @@
 
     function ChangeFullDate( day, month, year )
     {
+        if ( options )
+            options.GetFormData( );
         currentDate.day = day;
         currentDate.month = month;
         currentDate.year = year;

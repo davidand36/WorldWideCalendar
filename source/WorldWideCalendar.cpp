@@ -7,9 +7,11 @@
 
 
 #include "CalendarService.hpp"
-#include "CalendarDMYWService.hpp"
+#include "DMYWCalendarService.hpp"
+#include "NoOptions.hpp"
 #include "MayanCalendarService.hpp"
 #include "ChineseCalendarService.hpp"
+#include "HinduSolarOptions.hpp"
 //#include "HinduLunisolarCalendarService.hpp"
 //#include "FrenchRevolutionaryCalendarService.hpp"
 #include "BadiCalendarService.hpp"
@@ -77,8 +79,8 @@ enum Calendar
     NumCalendars
 };
 
-const std::tr1::array< string, NumCalendars > s_calendarNames
-= { {
+const array< string, NumCalendars > s_calendarNames
+= {
     "Egyptian",
     "Mayan",
     "Chinese",
@@ -96,9 +98,9 @@ const std::tr1::array< string, NumCalendars > s_calendarNames
     "Bahai",
     "Badi",
 //    "ISO 8601"
-    } };
+    };
 
-const std::tr1::array< string, CalendarService::NumActions > s_actionNames
+const array< string, CalendarService::NumActions > s_actionNames
 = {
     "ListCalendars",
     "DateToJD",
@@ -107,10 +109,11 @@ const std::tr1::array< string, CalendarService::NumActions > s_actionNames
     "WeekdayNames",
     "MonthNames",
     "MonthLength",
-    "SolarTerms"
+    "SolarTerms",
+    "AvailableOptions"
 };
 
-const std::tr1::array< string, CalendarService::NumFormats > s_formatNames
+const array< string, CalendarService::NumFormats > s_formatNames
 = {
     "JSON"
 };
@@ -261,7 +264,7 @@ WriteHttpResponse( )
     switch ( s_calendar )
     {
     case Egyptian:
-        return CalendarDMYWService< EgyptianCalendar, WesternWeek >::
+        return DMYWCalendarService< EgyptianCalendar, WesternWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Mayan:
         return MayanCalendarService::
@@ -270,40 +273,41 @@ WriteHttpResponse( )
         return ChineseCalendarService::
                 Respond( s_action, s_calendarName, s_format );
     case Armenian:
-        return CalendarDMYWService< ArmenianCalendar, ArmenianWeek >::
+        return DMYWCalendarService< ArmenianCalendar, ArmenianWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Julian:
-        return CalendarDMYWService< JulianCalendar, WesternWeek >::
+        return DMYWCalendarService< JulianCalendar, WesternWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Coptic:
-        return CalendarDMYWService< CopticCalendar, CopticWeek >::
+        return DMYWCalendarService< CopticCalendar, CopticWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Ethiopian:
-        return CalendarDMYWService< EthiopianCalendar, EthiopianWeek >::
+        return DMYWCalendarService< EthiopianCalendar, EthiopianWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Hebrew:
-        return CalendarDMYWService< HebrewCalendar, HebrewWeek >::
+        return DMYWCalendarService< HebrewCalendar, HebrewWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case HinduSolar:
-        return CalendarDMYWService< HinduSolarCalendar, HinduWeek >::
+        return DMYWCalendarService< HinduSolarCalendar, HinduWeek,
+                HinduSolarOptions >::
                 Respond( s_action, s_calendarName, s_format );
 //    case HinduLunisolar:
-//        return CalendarDMYWService< HinduLunisolarCalendar, HinduWeek >::
+//        return HinduLunisolarCalendarService::
 //                Respond( s_action, s_calendarName, s_format );
     case Islamic:
-        return CalendarDMYWService< IslamicCalendar, IslamicWeek >::
+        return DMYWCalendarService< IslamicCalendar, IslamicWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Persian:
-        return CalendarDMYWService< PersianCalendar, PersianWeek >::
+        return DMYWCalendarService< PersianCalendar, PersianWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Gregorian:
-        return CalendarDMYWService< GregorianCalendar, WesternWeek >::
+        return DMYWCalendarService< GregorianCalendar, WesternWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
 //    case FrenchRevolutionary:
 //        return FrenchRevolutionaryCalendarService::
 //                Respond( s_action, s_calendarName, s_format );
     case Bahai:
-        return CalendarDMYWService< BahaiCalendar, BahaiWeek >::
+        return DMYWCalendarService< BahaiCalendar, BahaiWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Badi:
         return BadiCalendarService::

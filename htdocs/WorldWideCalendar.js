@@ -177,8 +177,13 @@
             case 'Chinese':
                 calendarPages[ name ] = εδ.WWCal.ChineseCalendarPage( );
                 break;
-            case 'Old Hindu lunisolar':
-                //!!!
+            case 'Hindu solar':
+                calendarPages[ name ]
+                    = εδ.WWCal.DMYWCalendarPage(
+                        {
+                            name: name,
+                            options: εδ.WWCal.HinduSolarOptions()
+                        } );
                 break;
             case 'Hindu lunisolar':
                 //!!!
