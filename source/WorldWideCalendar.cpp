@@ -16,7 +16,7 @@
 #include "PersianOptions.hpp"
 #include "FrenchRevolutionaryCalendarService.hpp"
 #include "BadiCalendarService.hpp"
-//#include "ISO8601CalendarService.hpp"
+#include "ISO8601CalendarService.hpp"
 #include <Exception.hpp>
 #include <CGIInput.hpp>
 #include <CGIOutput.hpp>
@@ -76,7 +76,7 @@ enum Calendar
     FrenchRevolutionary,
     Bahai,
     Badi,
-//    ISO8601,
+    ISO8601,
     NumCalendars
 };
 
@@ -98,7 +98,7 @@ const array< string, NumCalendars > s_calendarNames
     "French Revolutionary",
     "Bahai",
     "Badi",
-//    "ISO 8601"
+    "ISO 8601"
     };
 
 const array< string, CalendarService::NumActions > s_actionNames
@@ -312,9 +312,9 @@ WriteHttpResponse( )
     case Badi:
         return BadiCalendarService::
                 Respond( s_action, s_calendarName, s_format );
-//    case ISO8601:
-//        return ISO8601CalendarService::
-//                Respond( s_action, s_calendarName, s_format );
+    case ISO8601:
+        return ISO8601CalendarService::
+                Respond( s_action, s_calendarName, s_format );
     default:
         throw Exception( "Unexpected calendar" );
     }

@@ -200,7 +200,7 @@
                 calendarPages[ name ] = εδ.WWCal.BadiCalendarPage( );
                 break;
             case 'ISO 8601':
-                //!!!
+                calendarPages[ name ] = εδ.WWCal.ISO8601CalendarPage( );
                 break;
             default:
                 calendarPages[ name ]

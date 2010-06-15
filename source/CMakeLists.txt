@@ -13,6 +13,7 @@ set( sources
      HinduLunisolarCalendarService.cpp
      FrenchRevolutionaryCalendarService.cpp
      BadiCalendarService.cpp
+     ISO8601CalendarService.cpp
      HinduSolarOptions.cpp
      PersianOptions.cpp
    )
