@@ -1,10 +1,11 @@
-#ifndef CHINESECALENDARSERVICE_HPP
-#define CHINESECALENDARSERVICE_HPP
+#ifndef HINDULUNISOLARCALENDARSERVICE_HPP
+#define HINDULUNISOLARCALENDARSERVICE_HPP
 /*
-  ChineseCalendarService.hpp
+  HinduLunisolarCalendarService.hpp
   Copyright © 2010 David M. Anderson
 
-  ChineseCalendarService class: Web service for the Chinese calendar.
+  HinduLunisolarCalendarService class: Web service for the Hindu lunisolar
+  calendar.
 */
 
 
@@ -18,7 +19,7 @@ namespace EpsilonDelta
 //*****************************************************************************
 
 
-class ChineseCalendarService
+class HinduLunisolarCalendarService
 {
 public:
     static std::string Respond( CalendarService::Action action,
@@ -26,6 +27,8 @@ public:
                                 CalendarService::Format format );
 
 private:
+    static std::string AvailableOptions( std::string calendarName,
+                                         CalendarService::Format format );
     static std::string Names( std::string calendarName,
                               CalendarService::Format format );
     static std::string DateToJD( std::string calendarName,
@@ -34,8 +37,6 @@ private:
                                  CalendarService::Format format );
     static std::string MonthData( std::string calendarName,
                                   CalendarService::Format format );
-    static std::string SolarTerms( std::string calendarName,
-                                   CalendarService::Format format );
 };
 
 
@@ -43,4 +44,4 @@ private:
 
 }                                                      //namespace EpsilonDelta
 
-#endif //CHINESECALENDARSERVICE_HPP
+#endif //HINDULUNISOLARCALENDARSERVICE_HPP

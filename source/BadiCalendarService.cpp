@@ -2,13 +2,14 @@
   BadiCalendarService.cpp
   Copyright © 2010 David M. Anderson
 
-  BadiCalendarService template class: Web service for the Badi calendar.
+  BadiCalendarService class: Web service for the Badi calendar.
 */
 
 
 #include "BadiCalendarService.hpp"
 #include <BadiCalendar.hpp>
 #include <BahaiWeek.hpp>
+#include <BadiDate.hpp>
 #include <CGIInput.hpp>
 #include <JSON.hpp>
 #include <DivMod.hpp>
@@ -28,17 +29,53 @@ BadiCalendarService::Respond( CalendarService::Action action,
 {
     switch ( action )
     {
+    case CalendarService::Names:
+        return Names( calendarName, format );
     case CalendarService::DateToJD:
         return DateToJD( calendarName, format );
     case CalendarService::JDToDate:
         return JDToDate( calendarName, format );
-    case CalendarService::Names:
-        return Names( calendarName, format );
-    case CalendarService::MonthLength:
-        return MonthLength( calendarName, format );
+    case CalendarService::MonthData:
+        return MonthData( calendarName, format );
     default:
         throw Exception( "Unexpected action for "
                          + calendarName + " calendar." );
+    }
+}
+
+//=============================================================================
+
+std::string
+BadiCalendarService::Names( std::string calendarName,
+                            CalendarService::Format format )
+{
+    std::vector< std::string > dayNames;
+    int maxDaysInMonth = 19;
+    for ( int d = 0; d < maxDaysInMonth; ++d )
+        dayNames.push_back( BadiCalendar::MonthName( d ) );
+    std::vector< std::string > monthNames;
+    for ( int m = 0; m < BadiCalendar::MonthsInYear( ); ++m )
+        monthNames.push_back( BadiCalendar::MonthName( m ) );
+    std::vector< std::string > yearNames;
+    for ( int y = 0; y < BadiCalendar::YearsInVahid(); ++y )
+        yearNames.push_back( BadiCalendar::YearName( y ) );
+    std::vector< std::string > weekdayNames;
+    for ( int i = 0; i < BahaiWeek::DaysInWeek(); ++i )
+        weekdayNames.push_back( BahaiWeek::WeekDayName( i ) );
+    switch ( format )
+    {
+    case CalendarService::JSON:
+    {
+        JSONObject jsonObj;
+        jsonObj[ "calendar" ] = ToJSON( calendarName );
+        jsonObj[ "dayNames" ] = ToJSON( dayNames );
+        jsonObj[ "monthNames" ] = ToJSON( monthNames );
+        jsonObj[ "yearNames" ] = ToJSON( yearNames );
+        jsonObj[ "weekdayNames" ] = ToJSON( weekdayNames );
+        return ToJSON( jsonObj );
+    }
+    default:
+        throw Exception( "Unexpected format" );
     }
 }
 
@@ -54,8 +91,11 @@ BadiCalendarService::DateToJD( std::string calendarName,
     int year = std::atoi( cgiInput[ "year" ].c_str() );
     int vahid = std::atoi( cgiInput[ "vahid" ].c_str() );
     int kulliShay = std::atoi( cgiInput[ "kulliShay" ].c_str() );
-    int julianDay = BadiCalendar::DMYVKToJulianDay( day, month, year,
-                                                    vahid, kulliShay );
+    BadiDate date( day, month, year, vahid, kulliShay );
+    date.MakeValid( );
+    int julianDay = date.JulianDay();
+    BadiCalendar::JulianDayToDMYVK( julianDay,
+                                    &day, &month, &year, &vahid, &kulliShay );
     int dayOfWeek = ModP( (julianDay + BahaiWeek::DayOfWeekOfJD0()),
                           BahaiWeek::DaysInWeek() );
     switch ( format )
@@ -114,44 +154,8 @@ BadiCalendarService::JDToDate( std::string calendarName,
 //=============================================================================
 
 std::string
-BadiCalendarService::Names( std::string calendarName,
-                            CalendarService::Format format )
-{
-    std::vector< std::string > dayNames;
-    int maxDaysInMonth = 19;
-    for ( int d = 0; d < maxDaysInMonth; ++d )
-        dayNames.push_back( BadiCalendar::MonthName( d ) );
-    std::vector< std::string > monthNames;
-    for ( int m = 0; m < BadiCalendar::MonthsInYear( ); ++m )
-        monthNames.push_back( BadiCalendar::MonthName( m ) );
-    std::vector< std::string > yearNames;
-    for ( int y = 0; y < BadiCalendar::YearsInVahid(); ++y )
-        yearNames.push_back( BadiCalendar::YearName( y ) );
-    std::vector< std::string > weekdayNames;
-    for ( int i = 0; i < BahaiWeek::DaysInWeek(); ++i )
-        weekdayNames.push_back( BahaiWeek::WeekDayName( i ) );
-    switch ( format )
-    {
-    case CalendarService::JSON:
-    {
-        JSONObject jsonObj;
-        jsonObj[ "calendar" ] = ToJSON( calendarName );
-        jsonObj[ "dayNames" ] = ToJSON( dayNames );
-        jsonObj[ "monthNames" ] = ToJSON( monthNames );
-        jsonObj[ "yearNames" ] = ToJSON( yearNames );
-        jsonObj[ "weekdayNames" ] = ToJSON( weekdayNames );
-        return ToJSON( jsonObj );
-    }
-    default:
-        throw Exception( "Unexpected format" );
-    }
-}
-
-//=============================================================================
-
-std::string
-BadiCalendarService::MonthLength( std::string calendarName,
-                                  CalendarService::Format format )
+BadiCalendarService::MonthData( std::string calendarName,
+                                CalendarService::Format format )
 {
     std::vector< std::string > monthNames;
     CGIInput & cgiInput = CGIInput::Instance();

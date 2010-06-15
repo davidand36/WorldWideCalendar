@@ -20,14 +20,12 @@ namespace CalendarService
 enum Action
 {
     ListCalendars,
+    AvailableOptions,
+    Names,
     DateToJD,
     JDToDate,
-    Names,
-    WeekdayNames,
-    MonthNames,
-    MonthLength,
+    MonthData,
     SolarTerms,
-    AvailableOptions,
     NumActions
 };
 

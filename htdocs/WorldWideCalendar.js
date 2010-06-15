@@ -186,10 +186,15 @@
                         } );
                 break;
             case 'Hindu lunisolar':
-                //!!!
+                calendarPages[ name ] = εδ.WWCal.HinduLunisolarCalendarPage( );
                 break;
-            case 'French Revolutionary':
-                //!!!
+            case 'Persian':
+                calendarPages[ name ]
+                    = εδ.WWCal.DMYWCalendarPage(
+                        {
+                            name: name,
+                            options: εδ.WWCal.PersianOptions()
+                        } );
                 break;
             case 'Badi':
                 calendarPages[ name ] = εδ.WWCal.BadiCalendarPage( );

@@ -9,6 +9,7 @@
 
 
 #include "CalendarService.hpp"
+#include <DateDMY.hpp>
 #include <CGIInput.hpp>
 #include <JSON.hpp>
 #include <DivMod.hpp>
@@ -33,18 +34,16 @@ public:
                                 CalendarService::Format format );
 
 private:
+    static std::string AvailableOptions( std::string calendarName,
+                                         CalendarService::Format format );
+    static std::string Names( std::string calendarName,
+                              CalendarService::Format format );
     static std::string DateToJD( std::string calendarName,
                                  CalendarService::Format format );
     static std::string JDToDate( std::string calendarName,
                                  CalendarService::Format format );
-    static std::string WeekdayNames( std::string calendarName,
-                                     CalendarService::Format format );
-    static std::string MonthNames( std::string calendarName,
-                                   CalendarService::Format format );
-    static std::string MonthLength( std::string calendarName,
-                                    CalendarService::Format format );
-    static std::string AvailableOptions( std::string calendarName,
-                                         CalendarService::Format format );
+    static std::string MonthData( std::string calendarName,
+                                  CalendarService::Format format );
 };
 
 
@@ -60,21 +59,78 @@ DMYWCalendarService< C, W, O >::Respond( CalendarService::Action action,
     O::Set( );
     switch ( action )
     {
+    case CalendarService::AvailableOptions:
+        return AvailableOptions( calendarName, format );
+    case CalendarService::Names:
+        return Names( calendarName, format );
     case CalendarService::DateToJD:
         return DateToJD( calendarName, format );
     case CalendarService::JDToDate:
         return JDToDate( calendarName, format );
-    case CalendarService::WeekdayNames:
-        return WeekdayNames( calendarName, format );
-    case CalendarService::MonthNames:
-        return MonthNames( calendarName, format );
-    case CalendarService::MonthLength:
-        return MonthLength( calendarName, format );
-    case CalendarService::AvailableOptions:
-        return AvailableOptions( calendarName, format );
+    case CalendarService::MonthData:
+        return MonthData( calendarName, format );
     default:
         throw Exception( "Unexpected action for "
                          + calendarName + " calendar." );
+    }
+}
+
+//=============================================================================
+
+template <typename C, typename W, typename O>
+std::string
+DMYWCalendarService< C, W, O >::AvailableOptions( std::string calendarName,
+                                                CalendarService::Format format )
+{
+    std::vector< std::string > monthNames;
+    CGIInput & cgiInput = CGIInput::Instance();
+    std::string availableOptions = O::GetAvailable( format );
+    switch ( format )
+    {
+    case CalendarService::JSON:
+    {
+        JSONObject jsonObj;
+        jsonObj[ "calendar" ] = ToJSON( calendarName );
+        jsonObj[ "availableOptions" ] = availableOptions;
+        return ToJSON( jsonObj );
+    }
+    default:
+        throw Exception( "Unexpected format" );
+    }
+}
+
+//=============================================================================
+
+template <typename C, typename W, typename O>
+std::string
+DMYWCalendarService< C, W, O >::Names( std::string calendarName,
+                                       CalendarService::Format format )
+{
+    CGIInput & cgiInput = CGIInput::Instance();
+    std::string options = O::Get( format );
+    int month = std::atoi( cgiInput[ "month" ].c_str() );
+    int year = std::atoi( cgiInput[ "year" ].c_str() );
+    std::vector< std::string > weekdayNames;
+    for ( int i = 0; i < W::DaysInWeek(); ++i )
+        weekdayNames.push_back( W::WeekDayName( i ) );
+    std::vector< std::string > monthNames;
+    for ( int m = 1; m <= C::MonthsInYear( year ); ++m )
+        monthNames.push_back( C::MonthName( m, year ) );
+    switch ( format )
+    {
+    case CalendarService::JSON:
+    {
+        JSONObject jsonObj;
+        jsonObj[ "calendar" ] = ToJSON( calendarName );
+        jsonObj[ "options" ] = options;
+        jsonObj[ "month" ] = ToJSON( month );
+        jsonObj[ "year" ] = ToJSON( year );
+        jsonObj[ "weekdayNames" ] = ToJSON( weekdayNames );
+        jsonObj[ "monthNames" ] = ToJSON( monthNames );
+        return ToJSON( jsonObj );
+    }
+    default:
+        throw Exception( "Unexpected format" );
     }
 }
 
@@ -89,7 +145,10 @@ DMYWCalendarService< C, W, O >::DateToJD( std::string calendarName,
     int day = std::atoi( cgiInput[ "day" ].c_str() );
     int month = std::atoi( cgiInput[ "month" ].c_str() );
     int year = std::atoi( cgiInput[ "year" ].c_str() );
-    int julianDay = C::DMYToJulianDay( day, month, year );
+    DateDMY<C> date( day, month, year );
+    date.MakeValid( );
+    int julianDay = date.JulianDay();
+    C::JulianDayToDMY( julianDay, &day, &month, &year );
     int dayOfWeek = ModP( (julianDay + W::DayOfWeekOfJD0()), W::DaysInWeek() );
     std::string options = O::Get( format );
     switch ( format )
@@ -147,63 +206,8 @@ DMYWCalendarService< C, W, O >::JDToDate( std::string calendarName,
 
 template <typename C, typename W, typename O>
 std::string
-DMYWCalendarService< C, W, O >::WeekdayNames( std::string calendarName,
-                                              CalendarService::Format format )
-{
-    std::vector< std::string > weekdayNames;
-    for ( int i = 0; i < W::DaysInWeek(); ++i )
-        weekdayNames.push_back( W::WeekDayName( i ) );
-    std::string options = O::Get( format );
-    switch ( format )
-    {
-    case CalendarService::JSON:
-    {
-        JSONObject jsonObj;
-        jsonObj[ "calendar" ] = ToJSON( calendarName );
-        jsonObj[ "options" ] = options;
-        jsonObj[ "weekdayNames" ] = ToJSON( weekdayNames );
-        return ToJSON( jsonObj );
-    }
-    default:
-        throw Exception( "Unexpected format" );
-    }
-}
-
-//=============================================================================
-
-template <typename C, typename W, typename O>
-std::string
-DMYWCalendarService< C, W, O >::MonthNames( std::string calendarName,
-                                            CalendarService::Format format )
-{
-    std::vector< std::string > monthNames;
-    CGIInput & cgiInput = CGIInput::Instance();
-    int year = std::atoi( cgiInput[ "year" ].c_str() );
-    for ( int m = 1; m <= C::MonthsInYear( year ); ++m )
-        monthNames.push_back( C::MonthName( m, year ) );
-    std::string options = O::Get( format );
-    switch ( format )
-    {
-    case CalendarService::JSON:
-    {
-        JSONObject jsonObj;
-        jsonObj[ "calendar" ] = ToJSON( calendarName );
-        jsonObj[ "options" ] = options;
-        jsonObj[ "year" ] = ToJSON( year );
-        jsonObj[ "monthNames" ] = ToJSON( monthNames );
-        return ToJSON( jsonObj );
-    }
-    default:
-        throw Exception( "Unexpected format" );
-    }
-}
-
-//=============================================================================
-
-template <typename C, typename W, typename O>
-std::string
-DMYWCalendarService< C, W, O >::MonthLength( std::string calendarName,
-                                             CalendarService::Format format )
+DMYWCalendarService< C, W, O >::MonthData( std::string calendarName,
+                                           CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
     int month = std::atoi( cgiInput[ "month" ].c_str() );
@@ -220,31 +224,6 @@ DMYWCalendarService< C, W, O >::MonthLength( std::string calendarName,
         jsonObj[ "month" ] = ToJSON( month );
         jsonObj[ "year" ] = ToJSON( year );
         jsonObj[ "monthLength" ] = ToJSON( monthLength );
-        return ToJSON( jsonObj );
-    }
-    default:
-        throw Exception( "Unexpected format" );
-    }
-}
-
-//=============================================================================
-
-template <typename C, typename W, typename O>
-std::string
-DMYWCalendarService< C, W, O >::AvailableOptions( std::string calendarName,
-                                                CalendarService::Format format )
-{
-    std::vector< std::string > monthNames;
-    CGIInput & cgiInput = CGIInput::Instance();
-    int year = std::atoi( cgiInput[ "year" ].c_str() );
-    std::string availableOptions = O::GetAvailable( format );
-    switch ( format )
-    {
-    case CalendarService::JSON:
-    {
-        JSONObject jsonObj;
-        jsonObj[ "calendar" ] = ToJSON( calendarName );
-        jsonObj[ "availableOptions" ] = availableOptions;
         return ToJSON( jsonObj );
     }
     default:

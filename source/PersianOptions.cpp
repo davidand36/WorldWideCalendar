@@ -1,13 +1,13 @@
 /*
-  HinduSolarOptions.cpp
+  PersianOptions.cpp
   Copyright © 2010 David M. Anderson
 
-  HinduSolarOptions class: options (versions) for Hindu Solar calendars.
+  PersianOptions class: options (methods) for Persian calendar.
 */
 
 
-#include "HinduSolarOptions.hpp"
-#include <HinduSolarCalendar.hpp>
+#include "PersianOptions.hpp"
+#include <PersianCalendar.hpp>
 #include <CGIInput.hpp>
 #include <JSON.hpp>
 #include <Exception.hpp>
@@ -24,10 +24,10 @@ namespace EpsilonDelta
 namespace
 {                                                                   //namespace
 
-const array< string, HinduSolarCalendar::NumVersions > s_versionNames
+const array< string, PersianCalendar::NumMethods > s_methodNames
 = {
-    "Modern",
-    "Old"
+    "Astronomical",
+    "Arithmetic"
   };
 
 }                                                                   //namespace
@@ -36,32 +36,32 @@ const array< string, HinduSolarCalendar::NumVersions > s_versionNames
 
 
 void
-HinduSolarOptions::Set( )
+PersianOptions::Set( )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    string versionName = cgiInput[ "version" ];
-    HinduSolarCalendar::EVersion version = HinduSolarCalendar::Modern;
-    for ( int i = 0; i < HinduSolarCalendar::NumVersions; ++i )
-        if ( s_versionNames[ i ] == versionName )
+    string methodName = cgiInput[ "method" ];
+    PersianCalendar::EMethod method = PersianCalendar::Astronomical;
+    for ( int i = 0; i < PersianCalendar::NumMethods; ++i )
+        if ( s_methodNames[ i ] == methodName )
         {
-            version = HinduSolarCalendar::EVersion( i );
+            method = PersianCalendar::EMethod( i );
             break;
         }
-    HinduSolarCalendar::SetVersion( version );
+    PersianCalendar::SetMethod( method );
 }
 
 //=============================================================================
 
 string
-HinduSolarOptions::Get( CalendarService::Format format )
+PersianOptions::Get( CalendarService::Format format )
 {
-    string versionName = s_versionNames[ HinduSolarCalendar::GetVersion() ];
+    string methodName = s_methodNames[ PersianCalendar::GetMethod() ];
     switch ( format )
     {
     case CalendarService::JSON:
     {
         JSONObject jsonObj;
-        jsonObj[ "version" ] = ToJSON( versionName );
+        jsonObj[ "method" ] = ToJSON( methodName );
         return ToJSON( jsonObj );
     }
     default:
@@ -72,14 +72,14 @@ HinduSolarOptions::Get( CalendarService::Format format )
 //=============================================================================
 
 string
-HinduSolarOptions::GetAvailable( CalendarService::Format format )
+PersianOptions::GetAvailable( CalendarService::Format format )
 {
     switch ( format )
     {
     case CalendarService::JSON:
     {
         JSONObject jsonObj;
-        jsonObj[ "versions" ] = ToJSON( s_versionNames );
+        jsonObj[ "methods" ] = ToJSON( s_methodNames );
         return ToJSON( jsonObj );
     }
     default:

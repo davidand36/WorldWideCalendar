@@ -234,7 +234,7 @@
         requestsPending &= ~ CurDateRqst;
         εδ.WWCal.app.SetJulianDay( currentDate.julianDay );
         GetFirstDate( );
-        GetMonthLength( );
+        GetMonthData( );
         DisplayDateForm( );
     }
 
@@ -279,11 +279,11 @@
 
 //-----------------------------------------------------------------------------
 
-    function GetMonthLength( )
+    function GetMonthData( )
     {
         $.getJSON( serverURL,
                    {
-                       action: 'MonthLength',
+                       action: 'MonthData',
                        calendar: calendarName,
                        month: currentDate.month,
                        leap: currentDate.leap,

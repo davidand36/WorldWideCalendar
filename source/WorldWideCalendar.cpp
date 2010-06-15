@@ -12,8 +12,9 @@
 #include "MayanCalendarService.hpp"
 #include "ChineseCalendarService.hpp"
 #include "HinduSolarOptions.hpp"
-//#include "HinduLunisolarCalendarService.hpp"
-//#include "FrenchRevolutionaryCalendarService.hpp"
+#include "HinduLunisolarCalendarService.hpp"
+#include "PersianOptions.hpp"
+#include "FrenchRevolutionaryCalendarService.hpp"
 #include "BadiCalendarService.hpp"
 //#include "ISO8601CalendarService.hpp"
 #include <Exception.hpp>
@@ -68,11 +69,11 @@ enum Calendar
     Ethiopian,
     Hebrew,
     HinduSolar,
-//    HinduLunisolar,
+    HinduLunisolar,
     Islamic,
     Persian,
     Gregorian,
-//    FrenchRevolutionary,
+    FrenchRevolutionary,
     Bahai,
     Badi,
 //    ISO8601,
@@ -90,11 +91,11 @@ const array< string, NumCalendars > s_calendarNames
     "Ethiopian",
     "Hebrew",
     "Hindu solar",
-//    "Hindu lunisolar",
+    "Hindu lunisolar",
     "Islamic",
     "Persian",
     "Gregorian",
-//    "French Revolutionary",
+    "French Revolutionary",
     "Bahai",
     "Badi",
 //    "ISO 8601"
@@ -103,14 +104,12 @@ const array< string, NumCalendars > s_calendarNames
 const array< string, CalendarService::NumActions > s_actionNames
 = {
     "ListCalendars",
+    "AvailableOptions",
+    "Names",
     "DateToJD",
     "JDToDate",
-    "Names",
-    "WeekdayNames",
-    "MonthNames",
-    "MonthLength",
-    "SolarTerms",
-    "AvailableOptions"
+    "MonthData",
+    "SolarTerms"
 };
 
 const array< string, CalendarService::NumFormats > s_formatNames
@@ -209,7 +208,7 @@ GetCgiGlobals( )
     for ( int i = 0; i < CalendarService::NumActions; ++i )
         if ( s_actionNames[ i ] == actionName )
         {
-            s_action = (CalendarService::Action)i;
+            s_action = CalendarService::Action( i );
             break;
         }
     if ( s_action == CalendarService::NumActions )
@@ -224,7 +223,7 @@ GetCgiGlobals( )
         for ( int i = 0; i < NumCalendars; ++i )
             if ( s_calendarNames[ i ] == s_calendarName )
             {
-                s_calendar = (Calendar)i;
+                s_calendar = Calendar( i );
                 break;
             }
         if ( s_calendar == NumCalendars )
@@ -238,7 +237,7 @@ GetCgiGlobals( )
     for ( int i = 0; i < CalendarService::NumFormats; ++i )
         if ( s_formatNames[ i ] == formatName )
         {
-            s_format = (CalendarService::Format)i;
+            s_format = CalendarService::Format( i );
             break;
         }
     if ( s_format == CalendarService::NumFormats )
@@ -291,21 +290,22 @@ WriteHttpResponse( )
         return DMYWCalendarService< HinduSolarCalendar, HinduWeek,
                 HinduSolarOptions >::
                 Respond( s_action, s_calendarName, s_format );
-//    case HinduLunisolar:
-//        return HinduLunisolarCalendarService::
-//                Respond( s_action, s_calendarName, s_format );
+    case HinduLunisolar:
+        return HinduLunisolarCalendarService::
+                Respond( s_action, s_calendarName, s_format );
     case Islamic:
         return DMYWCalendarService< IslamicCalendar, IslamicWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Persian:
-        return DMYWCalendarService< PersianCalendar, PersianWeek, NoOptions >::
+        return DMYWCalendarService< PersianCalendar, PersianWeek,
+                PersianOptions >::
                 Respond( s_action, s_calendarName, s_format );
     case Gregorian:
         return DMYWCalendarService< GregorianCalendar, WesternWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
-//    case FrenchRevolutionary:
-//        return FrenchRevolutionaryCalendarService::
-//                Respond( s_action, s_calendarName, s_format );
+    case FrenchRevolutionary:
+        return FrenchRevolutionaryCalendarService::
+                Respond( s_action, s_calendarName, s_format );
     case Bahai:
         return DMYWCalendarService< BahaiCalendar, BahaiWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );

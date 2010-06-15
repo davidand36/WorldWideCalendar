@@ -148,7 +148,7 @@
         requestsPending &= ~ CurDateRqst;
         εδ.WWCal.app.SetJulianDay( currentDate.julianDay );
         GetFirstDate( );
-        GetMonthLength( );
+        GetMonthData( );
     }
 
 //-----------------------------------------------------------------------------
@@ -191,11 +191,11 @@
 
 //-----------------------------------------------------------------------------
 
-    function GetMonthLength( )
+    function GetMonthData( )
     {
         $.getJSON( serverURL,
                    {
-                       action: 'MonthLength',
+                       action: 'MonthData',
                        calendar: calendarName,
                        month: currentDate.month,
                        year: currentDate.year,
@@ -218,17 +218,14 @@
         }
 
         monthLength = ajaxResponse.monthLength;
-        requestsPending &= ~ MonthLengthRqst;
         if ( monthLength === 0 )
         {
             εδ.errorHandler.ReportError( 'An error occurred: monthLength=0' );
             return;
         }
         if ( currentDate.day > monthLength )
-        {
             currentDate.day = monthLength;
-            DisplayDateForm( );
-        }
+        requestsPending &= ~ MonthLengthRqst;
         DisplayDateForm( );
         DisplayMonthTable( );
     }

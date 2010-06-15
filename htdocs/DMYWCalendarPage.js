@@ -36,19 +36,17 @@
     var serverURL = εδ.WWCal.app.ServerURL();
     var errorHandler = εδ.WWCal.errorHandler;
 
-    var CurDateRqst = 1 << 0;
-    var FirstDateRqst = 1 << 1;
-    var MonthLengthRqst = 1 << 2;
-    var MonthNamesRqst = 1 << 3;
-    var WeekdayNamesRqst = 1 << 4;
-    var AvailableOptionsRqst = 1 << 5;
+    var AvailableOptionsRqst = 1 << 0;
+    var CurDateRqst = 1 << 1;
+    var FirstDateRqst = 1 << 2;
+    var NamesRqst = 1 << 3;
+    var MonthDataRqst = 1 << 4;
 
 //=============================================================================
 
     theObject.Start = function( )
     {
         GetAvailableOptions( );
-        GetWeekdayNames( );
         StartNewMonth( true );
     };
 
@@ -108,46 +106,6 @@
         if ( options )
             options.ProcessAvailableOptions( ajaxResponse );
         requestsPending &= ~ AvailableOptionsRqst;
-    }
-
-//=============================================================================
-
-    function GetWeekdayNames( )
-    {
-        if ( daysInWeek > 0 )
-            return;
-        var ajaxData
-            = {
-                action: 'WeekdayNames',
-                calendar: calendarName,
-                format: 'JSON'
-            };
-        if ( options )
-            options.AddAjaxData( ajaxData );
-        $.getJSON( serverURL, ajaxData, ProcessWeekdayNames );
-        requestsPending |= WeekdayNamesRqst;
-    }
-
-//.............................................................................
-
-    function ProcessWeekdayNames( ajaxResponse )
-    {
-        if ( ajaxResponse.Error )
-        {
-            errorHandler.ReportError( ajaxResponse.Error );
-            return;
-        }
-
-        var weekdayRsp = ajaxResponse;
-        weekdayNames = weekdayRsp.weekdayNames;
-        daysInWeek = weekdayNames.length;
-        requestsPending &= ~ WeekdayNamesRqst;
-        if ( daysInWeek === 0 )
-            εδ.WWCal.errorHandler.ReportError(
-                'An error occurred: daysInWeek = 0' );
-
-        DisplayDateForm( );
-        DisplayMonthTable( );
     }
 
 //-----------------------------------------------------------------------------
@@ -211,31 +169,32 @@
                             dateRsp.year, dateRsp.dayOfWeek );
         requestsPending &= ~ CurDateRqst;
         εδ.WWCal.app.SetJulianDay( currentDate.julianDay );
-        GetMonthNames( );
+        GetNames( );
         GetFirstDate( );
-        GetMonthLength( );
+        GetMonthData( );
     }
 
 //-----------------------------------------------------------------------------
 
-    function GetMonthNames( )
+    function GetNames( )
     {
         var ajaxData
             = {
-                action: 'MonthNames',
+                action: 'Names',
                 calendar: calendarName,
+                month: currentDate.month,
                 year: currentDate.year,
                 format: 'JSON'
             };
         if ( options )
             options.AddAjaxData( ajaxData );
-        $.getJSON( serverURL, ajaxData, ProcessMonthNames );
-        requestsPending |= MonthNamesRqst;
+        $.getJSON( serverURL, ajaxData, ProcessNames );
+        requestsPending |= NamesRqst;
     }
 
 //.............................................................................
 
-    function ProcessMonthNames( ajaxResponse )
+    function ProcessNames( ajaxResponse )
     {
         if ( ajaxResponse.Error )
         {
@@ -244,11 +203,19 @@
         }
 
         monthNames = ajaxResponse.monthNames;
-        requestsPending &= ~ MonthNamesRqst;
+        weekdayNames = ajaxResponse.weekdayNames;
+        daysInWeek = weekdayNames.length;
+        requestsPending &= ~ NamesRqst;
         if ( monthNames.length === 0 )
         {
             εδ.WWCal.app.ReportError(
                 'An error occurred: monthNames.length = 0' );
+            return;
+        }
+        if ( weekdayNames.length === 0 )
+        {
+            εδ.WWCal.app.ReportError(
+                'An error occurred: weekdayNames.length = 0' );
             return;
         }
         DisplayDateForm( );
@@ -294,11 +261,11 @@
 
 //-----------------------------------------------------------------------------
 
-    function GetMonthLength( )
+    function GetMonthData( )
     {
         var ajaxData
             = {
-                action: 'MonthLength',
+                action: 'MonthData',
                 calendar: calendarName,
                 month: currentDate.month,
                 year: currentDate.year,
@@ -306,13 +273,13 @@
             };
         if ( options )
             options.AddAjaxData( ajaxData );
-        $.getJSON( serverURL, ajaxData, ProcessMonthLength );
-        requestsPending |= MonthLengthRqst;
+        $.getJSON( serverURL, ajaxData, ProcessMonthData );
+        requestsPending |= MonthDataRqst;
     }
 
 //.............................................................................
 
-    function ProcessMonthLength( ajaxResponse )
+    function ProcessMonthData( ajaxResponse )
     {
         if ( ajaxResponse.Error )
         {
@@ -321,7 +288,7 @@
         }
 
         monthLength = ajaxResponse.monthLength;
-        requestsPending &= ~ MonthLengthRqst;
+        requestsPending &= ~ MonthDataRqst;
         if ( monthLength === 0 )
         {
             εδ.WWCal.errorHandler.ReportError(
@@ -341,8 +308,8 @@
     function DisplayDateForm( )
     {
         if ( (requestsPending &
-             (CurDateRqst | FirstDateRqst | MonthNamesRqst | WeekdayNamesRqst |
-              MonthLengthRqst)) != 0 )
+             (AvailableOptionsRqst | CurDateRqst | FirstDateRqst | NamesRqst |
+              MonthDataRqst)) != 0 )
             return;
         var html = '';
         html += '<form name="DateForm">' +
@@ -460,9 +427,8 @@
 
     function DisplayMonthTable( )
     {
-        if ( (requestsPending & (CurDateRqst | FirstDateRqst |
-                                 MonthNamesRqst | MonthLengthRqst |
-                                 WeekdayNamesRqst)) != 0 )
+        if ( (requestsPending &
+              (CurDateRqst | FirstDateRqst | NamesRqst | MonthDataRqst)) != 0 )
             return;
 
         var i, d;

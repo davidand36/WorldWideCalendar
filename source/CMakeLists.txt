@@ -10,8 +10,11 @@ set( sources
      WorldWideCalendar.cpp
      MayanCalendarService.cpp
      ChineseCalendarService.cpp
+     HinduLunisolarCalendarService.cpp
+     FrenchRevolutionaryCalendarService.cpp
      BadiCalendarService.cpp
      HinduSolarOptions.cpp
+     PersianOptions.cpp
    )
 
 set( EpsilonDeltaLibs

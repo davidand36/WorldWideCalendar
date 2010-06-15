@@ -4,7 +4,7 @@
   BadiCalendarService.hpp
   Copyright © 2010 David M. Anderson
 
-  BadiCalendarService template class: Web service for the Badi calendar.
+  BadiCalendarService class: Web service for the Badi calendar.
 */
 
 
@@ -26,14 +26,14 @@ public:
                                 CalendarService::Format format );
 
 private:
+    static std::string Names( std::string calendarName,
+                              CalendarService::Format format );
     static std::string DateToJD( std::string calendarName,
                                  CalendarService::Format format );
     static std::string JDToDate( std::string calendarName,
                                  CalendarService::Format format );
-    static std::string Names( std::string calendarName,
-                                     CalendarService::Format format );
-    static std::string MonthLength( std::string calendarName,
-                                    CalendarService::Format format );
+    static std::string MonthData( std::string calendarName,
+                                  CalendarService::Format format );
 };
 
 

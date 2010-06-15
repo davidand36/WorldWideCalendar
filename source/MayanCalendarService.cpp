@@ -10,6 +10,7 @@
 #include <MayanLongCountCalendar.hpp>
 #include <MayanHaabCalendar.hpp>
 #include <MayanTzolkinCalendar.hpp>
+#include <MayanLongCountDate.hpp>
 #include <CGIInput.hpp>
 #include <JSON.hpp>
 #include <DivMod.hpp>
@@ -29,17 +30,44 @@ MayanCalendarService::Respond( CalendarService::Action action,
 {
     switch ( action )
     {
+    case CalendarService::Names:
+        return Names( calendarName, format );
     case CalendarService::DateToJD:
         return DateToJD( calendarName, format );
     case CalendarService::JDToDate:
         return JDToDate( calendarName, format );
-    case CalendarService::Names:
-        return Names( calendarName, format );
-    case CalendarService::MonthLength:
-        return HaabMonthLength( calendarName, format );
+    case CalendarService::MonthData:
+        return HaabMonthData( calendarName, format );
     default:
         throw Exception( "Unexpected action for "
                          + calendarName + " calendar." );
+    }
+}
+
+//=============================================================================
+
+std::string
+MayanCalendarService::Names( std::string calendarName,
+                            CalendarService::Format format )
+{
+    std::vector< std::string > haabMonthNames;
+    for ( int m = 1; m <= MayanHaabCalendar::MonthsInYear(); ++m )
+        haabMonthNames.push_back( MayanHaabCalendar::MonthName( m ) );
+    std::vector< std::string > veintenaNames;
+    for ( int v = 1; v <= 20; ++v )
+        veintenaNames.push_back( MayanTzolkinCalendar::VeintenaName( v ) );
+    switch ( format )
+    {
+    case CalendarService::JSON:
+    {
+        JSONObject jsonObj;
+        jsonObj[ "calendar" ] = ToJSON( calendarName );
+        jsonObj[ "haabMonthNames" ] = ToJSON( haabMonthNames );
+        jsonObj[ "veintanaNames" ] = ToJSON( veintenaNames );
+        return ToJSON( jsonObj );
+    }
+    default:
+        throw Exception( "Unexpected format" );
     }
 }
 
@@ -59,9 +87,14 @@ MayanCalendarService::DateToJD( std::string calendarName,
     int calabtun = std::atoi( cgiInput[ "calabtun" ].c_str() );
     int kinchiltun = std::atoi( cgiInput[ "kinchiltun" ].c_str() );
     int alautun = std::atoi( cgiInput[ "alautun" ].c_str() );
-    int julianDay = MayanLongCountCalendar::LongCountToJulianDay( kin, uinal,
-                                                tun, katun, baktun, pictun,
-                                                calabtun, kinchiltun, alautun );
+    MayanLongCountDate date(  kin, uinal, tun, katun, baktun, pictun,
+                              calabtun, kinchiltun, alautun );
+    date.MakeValid( );
+    int julianDay = date.JulianDay();
+    MayanLongCountCalendar::JulianDayToLongCount( julianDay,
+                                                  &kin, &uinal, &tun, &katun,
+                                                  &baktun, &pictun, &calabtun,
+                                                  &kinchiltun, &alautun );
     int day, month, year;
     MayanHaabCalendar::JulianDayToDMY( julianDay, &day, &month, &year );
     int trecena, veintena;
@@ -142,35 +175,8 @@ MayanCalendarService::JDToDate( std::string calendarName,
 //=============================================================================
 
 std::string
-MayanCalendarService::Names( std::string calendarName,
-                            CalendarService::Format format )
-{
-    std::vector< std::string > haabMonthNames;
-    for ( int m = 1; m <= MayanHaabCalendar::MonthsInYear(); ++m )
-        haabMonthNames.push_back( MayanHaabCalendar::MonthName( m ) );
-    std::vector< std::string > veintenaNames;
-    for ( int v = 1; v <= 20; ++v )
-        veintenaNames.push_back( MayanTzolkinCalendar::VeintenaName( v ) );
-    switch ( format )
-    {
-    case CalendarService::JSON:
-    {
-        JSONObject jsonObj;
-        jsonObj[ "calendar" ] = ToJSON( calendarName );
-        jsonObj[ "haabMonthNames" ] = ToJSON( haabMonthNames );
-        jsonObj[ "veintanaNames" ] = ToJSON( veintenaNames );
-        return ToJSON( jsonObj );
-    }
-    default:
-        throw Exception( "Unexpected format" );
-    }
-}
-
-//=============================================================================
-
-std::string
-MayanCalendarService::HaabMonthLength( std::string calendarName,
-                                       CalendarService::Format format )
+MayanCalendarService::HaabMonthData( std::string calendarName,
+                                     CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
     int month = std::atoi( cgiInput[ "haabMonth" ].c_str() );

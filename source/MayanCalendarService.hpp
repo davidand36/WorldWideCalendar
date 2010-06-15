@@ -26,14 +26,14 @@ public:
                                 CalendarService::Format format );
 
 private:
+    static std::string Names( std::string calendarName,
+                              CalendarService::Format format );
     static std::string DateToJD( std::string calendarName,
                                  CalendarService::Format format );
     static std::string JDToDate( std::string calendarName,
                                  CalendarService::Format format );
-    static std::string Names( std::string calendarName,
-                              CalendarService::Format format );
-    static std::string HaabMonthLength( std::string calendarName,
-                                        CalendarService::Format format );
+    static std::string HaabMonthData( std::string calendarName,
+                                      CalendarService::Format format );
 };
 
 

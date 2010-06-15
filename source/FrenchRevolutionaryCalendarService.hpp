@@ -1,10 +1,11 @@
-#ifndef CHINESECALENDARSERVICE_HPP
-#define CHINESECALENDARSERVICE_HPP
+#ifndef FRENCHREVOLUTIONARYCALENDARSERVICE_HPP
+#define FRENCHREVOLUTIONARYCALENDARSERVICE_HPP
 /*
-  ChineseCalendarService.hpp
+  FrenchRevolutionaryCalendarService.hpp
   Copyright © 2010 David M. Anderson
 
-  ChineseCalendarService class: Web service for the Chinese calendar.
+  FrenchRevolutionaryCalendarService class: Web service for the French
+  Revolutionary calendar.
 */
 
 
@@ -18,7 +19,7 @@ namespace EpsilonDelta
 //*****************************************************************************
 
 
-class ChineseCalendarService
+class FrenchRevolutionaryCalendarService
 {
 public:
     static std::string Respond( CalendarService::Action action,
@@ -34,8 +35,6 @@ private:
                                  CalendarService::Format format );
     static std::string MonthData( std::string calendarName,
                                   CalendarService::Format format );
-    static std::string SolarTerms( std::string calendarName,
-                                   CalendarService::Format format );
 };
 
 
@@ -43,4 +42,4 @@ private:
 
 }                                                      //namespace EpsilonDelta
 
-#endif //CHINESECALENDARSERVICE_HPP
+#endif //FRENCHREVOLUTIONARYCALENDARSERVICE_HPP

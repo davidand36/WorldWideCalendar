@@ -29,19 +29,73 @@ ChineseCalendarService::Respond( CalendarService::Action action,
 {
     switch ( action )
     {
+    case CalendarService::Names:
+        return Names( calendarName, format );
     case CalendarService::DateToJD:
         return DateToJD( calendarName, format );
     case CalendarService::JDToDate:
         return JDToDate( calendarName, format );
-    case CalendarService::Names:
-        return Names( calendarName, format );
-    case CalendarService::MonthLength:
-        return MonthLength( calendarName, format );
+    case CalendarService::MonthData:
+        return MonthData( calendarName, format );
     case CalendarService::SolarTerms:
         return SolarTerms( calendarName, format );
     default:
         throw Exception( "Unexpected action for "
                          + calendarName + " calendar." );
+    }
+}
+
+//=============================================================================
+
+string
+ChineseCalendarService::Names( string calendarName,
+                            CalendarService::Format format )
+{
+    vector< string > stemNames;
+    for ( int s = 1; s <= 10; ++s )
+        stemNames.push_back( ChineseCalendar::CelestialStemName( s ) );
+    vector< string > branchNames;
+    for ( int b = 1; b <= 12; ++b )
+        branchNames.push_back( ChineseCalendar::TerrestrialBranchName( b ) );
+    vector< string > branchEnglishNames;
+    for ( int b = 1; b <= 12; ++b )
+        branchEnglishNames.push_back(
+            ChineseCalendar::TerrestrialBranchName( b, true ) );
+    vector< string > majorSolarTermNames;
+    for ( int t = 1; t <= 12; ++t )
+        majorSolarTermNames.push_back(
+            ChineseCalendar::MajorSolarTermName( t ) );
+    vector< string > majorSolarTermEnglishNames;
+    for ( int t = 1; t <= 12; ++t )
+        majorSolarTermEnglishNames.push_back(
+            ChineseCalendar::MajorSolarTermName( t, true ) );
+    vector< string > minorSolarTermNames;
+    for ( int t = 1; t <= 12; ++t )
+        minorSolarTermNames.push_back(
+            ChineseCalendar::MinorSolarTermName( t ) );
+    vector< string > minorSolarTermEnglishNames;
+    for ( int t = 1; t <= 12; ++t )
+        minorSolarTermEnglishNames.push_back(
+            ChineseCalendar::MinorSolarTermName( t, true ) );
+    switch ( format )
+    {
+    case CalendarService::JSON:
+    {
+        JSONObject jsonObj;
+        jsonObj[ "calendar" ] = ToJSON( calendarName );
+        jsonObj[ "stemNames" ] = ToJSON( stemNames );
+        jsonObj[ "branchNames" ] = ToJSON( branchNames );
+        jsonObj[ "branchEnglishNames" ] = ToJSON( branchEnglishNames );
+        jsonObj[ "majorSolarTermNames" ] = ToJSON( majorSolarTermNames );
+        jsonObj[ "majorSolarTermEnglishNames" ]
+                = ToJSON( majorSolarTermEnglishNames );
+        jsonObj[ "minorSolarTermNames" ] = ToJSON( minorSolarTermNames );
+        jsonObj[ "minorSolarTermEnglishNames" ]
+                = ToJSON( minorSolarTermEnglishNames );
+        return ToJSON( jsonObj );
+    }
+    default:
+        throw Exception( "Unexpected format" );
     }
 }
 
@@ -63,6 +117,7 @@ ChineseCalendarService::DateToJD( string calendarName,
     ChineseDate date( day, month, leap, year );
     date.MakeValid( );
     int julianDay = date.JulianDay();
+    ChineseCalendar::JulianDayToDMLY( julianDay, &day, &month, &leap, &year );
     int dayCyclical = ChineseCalendar::DayCyclical( julianDay );
     int monthCyclical = ChineseCalendar::MonthCyclical( month, year );
     int yearCyclical, yearCycle;
@@ -143,62 +198,8 @@ ChineseCalendarService::JDToDate( string calendarName,
 //=============================================================================
 
 string
-ChineseCalendarService::Names( string calendarName,
-                            CalendarService::Format format )
-{
-    vector< string > stemNames;
-    for ( int s = 1; s <= 10; ++s )
-        stemNames.push_back( ChineseCalendar::CelestialStemName( s ) );
-    vector< string > branchNames;
-    for ( int b = 1; b <= 12; ++b )
-        branchNames.push_back( ChineseCalendar::TerrestrialBranchName( b ) );
-    vector< string > branchEnglishNames;
-    for ( int b = 1; b <= 12; ++b )
-        branchEnglishNames.push_back(
-            ChineseCalendar::TerrestrialBranchName( b, true ) );
-    vector< string > majorSolarTermNames;
-    for ( int t = 1; t <= 12; ++t )
-        majorSolarTermNames.push_back(
-            ChineseCalendar::MajorSolarTermName( t ) );
-    vector< string > majorSolarTermEnglishNames;
-    for ( int t = 1; t <= 12; ++t )
-        majorSolarTermEnglishNames.push_back(
-            ChineseCalendar::MajorSolarTermName( t, true ) );
-    vector< string > minorSolarTermNames;
-    for ( int t = 1; t <= 12; ++t )
-        minorSolarTermNames.push_back(
-            ChineseCalendar::MinorSolarTermName( t ) );
-    vector< string > minorSolarTermEnglishNames;
-    for ( int t = 1; t <= 12; ++t )
-        minorSolarTermEnglishNames.push_back(
-            ChineseCalendar::MinorSolarTermName( t, true ) );
-    switch ( format )
-    {
-    case CalendarService::JSON:
-    {
-        JSONObject jsonObj;
-        jsonObj[ "calendar" ] = ToJSON( calendarName );
-        jsonObj[ "stemNames" ] = ToJSON( stemNames );
-        jsonObj[ "branchNames" ] = ToJSON( branchNames );
-        jsonObj[ "branchEnglishNames" ] = ToJSON( branchEnglishNames );
-        jsonObj[ "majorSolarTermNames" ] = ToJSON( majorSolarTermNames );
-        jsonObj[ "majorSolarTermEnglishNames" ]
-                = ToJSON( majorSolarTermEnglishNames );
-        jsonObj[ "minorSolarTermNames" ] = ToJSON( minorSolarTermNames );
-        jsonObj[ "minorSolarTermEnglishNames" ]
-                = ToJSON( minorSolarTermEnglishNames );
-        return ToJSON( jsonObj );
-    }
-    default:
-        throw Exception( "Unexpected format" );
-    }
-}
-
-//=============================================================================
-
-string
-ChineseCalendarService::MonthLength( string calendarName,
-                                     CalendarService::Format format )
+ChineseCalendarService::MonthData( string calendarName,
+                                   CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
     int month = atoi( cgiInput[ "month" ].c_str() );

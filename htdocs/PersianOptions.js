@@ -1,17 +1,17 @@
 /*
-    HinduSolarOptions.js
+    PersianOptions.js
     Copyright © 2010 David M. Anderson
     WorldWideCalendar.info
 
-    HinduSolarOptions "class": options (versions) for Hindu Solar calendars.
+    PersianOptions "class": options (methods) for Persian calendar.
 */
 
 
 //*****************************************************************************
 
 
-εδ.WWCal.HinduSolarOptions = function( )
-{                                                           //HinduSolarOptions
+εδ.WWCal.PersianOptions = function( )
+{                                                              //PersianOptions
 //-----------------------------------------------------------------------------
 /*
   Returns an object with these methods:
@@ -26,14 +26,14 @@
 //-----------------------------------------------------------------------------
 
     var theObject = { };
-    var versions = [];
-    var version;
+    var methods = [];
+    var method;
 
 //=============================================================================
 
     theObject.HaveOptions = function( )
     {
-        return versions.length > 0;
+        return methods.length > 0;
     };
 
 //-----------------------------------------------------------------------------
@@ -43,9 +43,9 @@
         var availableOptions = ajaxResponse.availableOptions;
         if ( availableOptions )
         {
-            versions = availableOptions.versions;
-            if ( versions.length > 0 )
-                version = versions[ 0 ];
+            methods = availableOptions.methods;
+            if ( methods.length > 0 )
+                method = methods[ 0 ];
         }
     };
 
@@ -53,8 +53,8 @@
 
     theObject.AddAjaxData = function( ajaxData )
     {
-        if ( version )
-            ajaxData.version = version;
+        if ( method )
+            ajaxData.method = method;
     };
 
 //-----------------------------------------------------------------------------
@@ -63,16 +63,16 @@
     {
         var html = '';
         var i;
-        if ( versions.length > 0 )
+        if ( methods.length > 0 )
         {
             html +=
-            '<label for="VersionList" class="DatePart">Version: </label>' +
+            '<label for="MethodList" class="DatePart">Method: </label>' +
             '<select class="DatePart" ' +
-                'name="VersionList" id="VersionList">';
-            for ( i = 0; i < versions.length; ++i )
+                'name="MethodList" id="MethodList">';
+            for ( i = 0; i < methods.length; ++i )
             {
-                html += '<option value="' + versions[i] + '">' +
-                    versions[ i ] +
+                html += '<option value="' + methods[i] + '">' +
+                    methods[ i ] +
                     '</option>';
             }
             html += '</select>';
@@ -84,29 +84,29 @@
 
     theObject.UpdateForm = function( )
     {
-        if ( version )
-            $('#VersionList').val( version );
+        if ( method )
+            $('#MethodList').val( method );
     };
 
 //-----------------------------------------------------------------------------
 
     theObject.HasFormChanged = function( )
     {
-        return ($('#VersionList').val() != version);
+        return ($('#MethodList').val() != method);
     };
 
 //-----------------------------------------------------------------------------
 
     theObject.GetFormData = function( )
     {
-        version = $('#VersionList').val();
+        method = $('#MethodList').val();
     };
 
 //=============================================================================
 
     return theObject;
 
-};                                                          //HinduSolarOptions
+};                                                             //PersianOptions
 
 
 //*****************************************************************************
