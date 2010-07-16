@@ -68,14 +68,14 @@ enum Calendar
     Coptic,
     Ethiopian,
     Hebrew,
-    HinduSolar,
     HinduLunisolar,
+    HinduSolar,
     Islamic,
     Persian,
     Gregorian,
     FrenchRevolutionary,
-    Bahai,
-    Badi,
+    WesternBahai,
+    EasternBahai,
     ISO8601,
     NumCalendars
 };
@@ -90,14 +90,14 @@ const array< string, NumCalendars > s_calendarNames
     "Coptic",
     "Ethiopian",
     "Hebrew",
-    "Hindu solar",
     "Hindu lunisolar",
+    "Hindu solar",
     "Islamic",
     "Persian",
     "Gregorian",
     "French Revolutionary",
-    "Bahai",
-    "Badi",
+    "Western Bahá'í",
+    "Eastern Bahá'í",
     "ISO 8601"
     };
 
@@ -306,10 +306,10 @@ WriteHttpResponse( )
     case FrenchRevolutionary:
         return FrenchRevolutionaryCalendarService::
                 Respond( s_action, s_calendarName, s_format );
-    case Bahai:
+    case WesternBahai:
         return DMYWCalendarService< BahaiCalendar, BahaiWeek, NoOptions >::
                 Respond( s_action, s_calendarName, s_format );
-    case Badi:
+    case EasternBahai:
         return BadiCalendarService::
                 Respond( s_action, s_calendarName, s_format );
     case ISO8601:

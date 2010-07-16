@@ -37,13 +37,13 @@
     var errorHandler = εδ.WWCal.errorHandler;
 
     var numMonths = 12;
-    var monthNames = [ 'Chaitra', 'Vaisakha', 'Jyaishtha', 'Ashadha',
-                       'Sravana', 'Bhadrapada', 'Asvina', 'Karttika',
-                       'Margasira', 'Pausha', 'Magha', 'Phalguna' ];
+    var monthNames = [ "Chaitra", "Vaishākh", "Jyaishtha", "Āshādha",
+                       "Shrāvana", "Bhādrapad", "Āshwin", "Kārtik",
+                       "Mārgashīrsha", "Paush", "Māgh", "Phālgun" ];
     var daysInWeek = 7;
-    var weekdayNames = [ 'Ravivara', 'Chandravara', 'Mangalavara',
-                         'Buddhavara', 'Brihaspatvara', 'Sukravara',
-                         'Sanivara' ];
+    var weekdayNames = [ "Ravi vāsara", "Soma vāsara", "Mangala vāsara",
+                         "Budha vāsara", "Guru vāsara", "Shukra vāsara",
+                         "Shani vāsara" ];
 
     var CurDateRqst = 1 << 0;
     var FirstDateRqst = 1 << 1;
@@ -364,9 +364,8 @@
             '<input class="DatePart" type="text" ' +
             'name="YearField" id="YearField" ' +
             'maxlength="5" size="4" />' +
-            '<span class="Button" id="ChangeDate">' +
-            'Change' +
-            '</span>' +
+            '<input type="submit" class="Button" id="ChangeDate"' +
+            ' value="Change" />' +
             '</div>' +
             '</form>';
         $('#DateDiv').html( html );

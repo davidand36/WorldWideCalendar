@@ -55,7 +55,7 @@ FrenchRevolutionaryCalendarService::Names( string calendarName,
 {
     CGIInput & cgiInput = CGIInput::Instance();
     int month = atoi( cgiInput[ "month" ].c_str() );
-    int year = atoi( cgiInput[ "year" ].c_str() );
+    long year = atol( cgiInput[ "year" ].c_str() );
 
     vector< string > weekdayNames;
     int numWeekdays = (( month < 13 )  ?
@@ -101,10 +101,10 @@ FrenchRevolutionaryCalendarService::DateToJD( string calendarName,
     CGIInput & cgiInput = CGIInput::Instance();
     int day = atoi( cgiInput[ "day" ].c_str() );
     int month = atoi( cgiInput[ "month" ].c_str() );
-    int year = atoi( cgiInput[ "year" ].c_str() );
+    long year = atol( cgiInput[ "year" ].c_str() );
     FrenchRevolutionaryDate date( day, month, year );
     date.MakeValid( );
-    int julianDay = date.JulianDay();
+    long julianDay = date.JulianDay();
     FrenchRevolutionaryCalendar::JulianDayToDMY( julianDay, &day, &month, &year );
     int dayOfWeek = ModP( (day - 1), 10 );
     switch ( format )
@@ -132,8 +132,9 @@ FrenchRevolutionaryCalendarService::JDToDate( string calendarName,
                                               CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    int julianDay = atoi( cgiInput[ "julianDay" ].c_str() );
-    int day, month, year;
+    long julianDay = atol( cgiInput[ "julianDay" ].c_str() );
+    int day, month;
+    long year;
     FrenchRevolutionaryCalendar::JulianDayToDMY( julianDay, &day, &month, &year );
     int dayOfWeek = ModP( (day - 1), 10 );
     switch ( format )
@@ -162,7 +163,7 @@ FrenchRevolutionaryCalendarService::MonthData( string calendarName,
 {
     CGIInput & cgiInput = CGIInput::Instance();
     int month = atoi( cgiInput[ "month" ].c_str() );
-    int year = atoi( cgiInput[ "year" ].c_str() );
+    long year = atol( cgiInput[ "year" ].c_str() );
     int monthLength = FrenchRevolutionaryCalendar::DaysInMonth( month, year );
     switch ( format )
     {

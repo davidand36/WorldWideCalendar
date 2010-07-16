@@ -333,9 +333,8 @@
         html += '</select>' +
             '<input type="text" class="DatePart" name="Year" id="YearField"' +
             ' maxlength="5" size="4" />' +
-            '<span class="Button" id="ChangeDate">' +
-            'Change' +
-            '</span>' +
+            '<input type="submit" class="Button" id="ChangeDate"' +
+            ' value="Change" />' +
             '</div>' +
             '</form>';
         $('#DateDiv').html( html );
@@ -433,7 +432,7 @@
 
         var i, d;
         var html = '';
-        html += '<table class="MonthTable">' +
+        html += '<table class="MonthTable" id="MonthTable">' +
             '<thead>' +
             '<tr>' +
             '<td colspan="' + daysInWeek + '">' +
@@ -482,6 +481,9 @@
             '</tbody>' +
             '</table>';
         $('#MonthTableDiv').html( html );
+
+        if ( daysInWeek === 10 )
+            $('#MonthTable').addClass( 'Cols10' );
 
         for ( d = 1; d <= monthLength; ++d )
         {

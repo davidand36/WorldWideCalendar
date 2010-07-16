@@ -69,28 +69,28 @@ body
 h1
 {
     font-size: 1.8em;
-    line-height: 1.667;
+    line-height: 1.667em;
     margin-top: 1.250em;
     margin-bottom: 0.417em;
 }
 h2
 {
     font-size: 1.6em;
-    line-height: 1.875;
+    line-height: 1.875em;
     margin-top: 1.406em;
     margin-bottom: 0.469em;
 }
 h3
 {
     font-size: 1.4em;
-    line-height: 1.071;
+    line-height: 1.071em;
     margin-top: 1.606em;
     margin-bottom: 0.535em;
 }
 h4
 {
     font-size: 1.2em;
-    line-height: 1.25;
+    line-height: 1.25em;
     margin-top: 1.875em;
     margin-bottom: 0.625em;
 }
@@ -155,7 +155,7 @@ p,
 li
 {
     font-size: 1em;
-    line-height: 1.5;
+    line-height: 1.5em;
 }
 
 /*Block paragraphs*/
@@ -186,6 +186,30 @@ abbr,
 .Number
 {
     letter-spacing: 0.1em;
+}
+
+/*-- Buttons within headers -------------------------------------------------*/
+
+h1 .Button
+{
+    font-size: 0.555em;
+}
+h2 .Button
+{
+    font-size: 0.625em;
+}
+h3 .Button
+{
+    font-size: 0.714em;
+}
+h4 .Button
+{
+    font-size: 0.833em;
+}
+h5 .Button,
+h6 .Button
+{
+    font-size: 0.909em;
 }
 
 /*== Links ==================================================================*/
@@ -242,10 +266,19 @@ p a:active
     padding: 1em;
 }
 
+.MinorDiv
+{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .MajorDiv
 {
     margin-top: 1em;
-    margin-bottom: 1em
+    margin-bottom: 1em;
+    width: 60em;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 table 
@@ -284,7 +317,8 @@ label
     text-align: center;
     text-decoration: none;
     padding: 0.25em 1em;
-    margin: 0.25em 1em
+    margin: 0.25em 1em;
+    font-weight: normal;
 }
 
 .Button:hover, 
@@ -368,12 +402,24 @@ td.MTDay.CurDay
 td.MTDay.Today
 {
     font-weight: bold;
-    background-color: #DFDFFF
+    background-color: #DFDFFF;
 }
 
 table.MonthTable.Cols10 th,
 table.MonthTable.Cols10 td.MTDay
 {
     width: 5.5em;
+}
+
+/*== About section ==========================================================*/
+
+.AboutTop
+{
+    background: #DFDFFF;
+}
+
+.AboutText
+{
+    text-align: left;
 }
 

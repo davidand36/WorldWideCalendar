@@ -51,13 +51,13 @@ BadiCalendarService::Names( std::string calendarName,
 {
     std::vector< std::string > dayNames;
     int maxDaysInMonth = 19;
-    for ( int d = 0; d < maxDaysInMonth; ++d )
-        dayNames.push_back( BadiCalendar::MonthName( d ) );
+    for ( int d = 1; d <= maxDaysInMonth; ++d )
+        dayNames.push_back( BadiCalendar::DayName( d ) );
     std::vector< std::string > monthNames;
-    for ( int m = 0; m < BadiCalendar::MonthsInYear( ); ++m )
+    for ( int m = 1; m <= BadiCalendar::MonthsInYear( ); ++m )
         monthNames.push_back( BadiCalendar::MonthName( m ) );
     std::vector< std::string > yearNames;
-    for ( int y = 0; y < BadiCalendar::YearsInVahid(); ++y )
+    for ( int y = 1; y <= BadiCalendar::YearsInVahid(); ++y )
         yearNames.push_back( BadiCalendar::YearName( y ) );
     std::vector< std::string > weekdayNames;
     for ( int i = 0; i < BahaiWeek::DaysInWeek(); ++i )
@@ -90,14 +90,14 @@ BadiCalendarService::DateToJD( std::string calendarName,
     int month = std::atoi( cgiInput[ "month" ].c_str() );
     int year = std::atoi( cgiInput[ "year" ].c_str() );
     int vahid = std::atoi( cgiInput[ "vahid" ].c_str() );
-    int kulliShay = std::atoi( cgiInput[ "kulliShay" ].c_str() );
+    long kulliShay = std::atoi( cgiInput[ "kulliShay" ].c_str() );
     BadiDate date( day, month, year, vahid, kulliShay );
     date.MakeValid( );
-    int julianDay = date.JulianDay();
+    long julianDay = date.JulianDay();
     BadiCalendar::JulianDayToDMYVK( julianDay,
                                     &day, &month, &year, &vahid, &kulliShay );
-    int dayOfWeek = ModP( (julianDay + BahaiWeek::DayOfWeekOfJD0()),
-                          BahaiWeek::DaysInWeek() );
+    int dayOfWeek = (int)ModP( (julianDay + BahaiWeek::DayOfWeekOfJD0()),
+                               (long)BahaiWeek::DaysInWeek() );
     switch ( format )
     {
     case CalendarService::JSON:
@@ -125,12 +125,13 @@ BadiCalendarService::JDToDate( std::string calendarName,
                                CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    int julianDay = std::atoi( cgiInput[ "julianDay" ].c_str() );
-    int day, month, year, vahid, kulliShay;
+    long julianDay = std::atol( cgiInput[ "julianDay" ].c_str() );
+    int day, month, year, vahid;
+    long kulliShay;
     BadiCalendar::JulianDayToDMYVK( julianDay,
                                     &day, &month, &year, &vahid, &kulliShay );
-    int dayOfWeek = ModP( (julianDay + BahaiWeek::DayOfWeekOfJD0()),
-                          BahaiWeek::DaysInWeek() );
+    int dayOfWeek = (int)ModP( (julianDay + BahaiWeek::DayOfWeekOfJD0()),
+                               (long)BahaiWeek::DaysInWeek() );
     switch ( format )
     {
     case CalendarService::JSON:
@@ -162,7 +163,7 @@ BadiCalendarService::MonthData( std::string calendarName,
     int month = std::atoi( cgiInput[ "month" ].c_str() );
     int year = std::atoi( cgiInput[ "year" ].c_str() );
     int vahid = std::atoi( cgiInput[ "vahid" ].c_str() );
-    int kulliShay = std::atoi( cgiInput[ "kulliShay" ].c_str() );
+    long kulliShay = std::atoi( cgiInput[ "kulliShay" ].c_str() );
     int monthLength = BadiCalendar::DaysInMonth( month, year,
                                                  vahid, kulliShay );
     switch ( format )

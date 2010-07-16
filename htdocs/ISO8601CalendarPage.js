@@ -149,9 +149,8 @@
             '<label for="YearField" class="DatePart"> Year: </label>' +
             '<input type="text" class="DatePart"' +
             ' name="Year" id="YearField" maxlength="5" size="4" />' +
-            '<span class="Button" id="ChangeDate">' +
-            'Change' +
-            '</span>' +
+            '<input type="submit" class="Button" id="ChangeDate"' +
+            ' value="Change" />' +
             '</form>';
         $('#DateDiv').html( html );
 

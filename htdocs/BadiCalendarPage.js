@@ -27,27 +27,27 @@
     var monthLength = 0;
     var requestsPending = 0;
 
-    var calendarName = 'Badi';
+    var calendarName = "Eastern Bahá'í";
     var serverURL = εδ.WWCal.app.ServerURL();
     var errorHandler = εδ.WWCal.errorHandler;
 
     var numDays = 19;
-    var dayNames = [ "Baha", "Jalal", "Jamal", "`Azamat", "Nur", "Rahmat",
-        "Kalimat", "Kamal", "Asma'", "`Izzat", "Mashiyyat", "`Ilm",
-        "Qudrat", "Qawl", "Masa'il", "Sharaf", "Sultan", "Mulk",
-        "`Ala'" ];
+    var dayNames = [ "Bahā`", "Jalāl", "Jamāl", "`Aẓamat", "Nūr", "Raḥmat",
+                     "Kalimāt", "Kamāl", "Asmā'", "`Izzat", "Mashīyyat",
+                     "`Ilm", "Qudrat", "Qawl", "Masā'il", "Sharaf", "Sulṭān",
+                     "Mulk", "`Alā'" ];
     var numMonths = 20;
-    var monthNames = [ "Baha", "Jalal", "Jamal", "`Azamat", "Nur",
-        "Rahmat", "Kalimat", "Kamal", "Asma'", "`Izzat",
-        "Mashiyyat", "`Ilm", "Qudrat", "Qawl", "Masa'il",
-        "Sharaf", "Sultan", "Mulk", "Ayyam-i-Ha", "`Ala'" ];
+    var monthNames = [ "Bahā`", "Jalāl", "Jamāl", "`Aẓamat", "Nūr", "Raḥmat",
+                     "Kalimāt", "Kamāl", "Asmā'", "`Izzat", "Mashīyyat",
+                     "`Ilm", "Qudrat", "Qawl", "Masā'il", "Sharaf", "Sulṭān",
+                     "Mulk", "Ayyām-i-Hā", "`Alā'" ];
     var numYears = 19;
-    var yearNames = [ "Alif", "Ba'", "Ab", "Dal", "Bab", "Vav",
-        "Abad", "Jad", "Baha", "Hubb", "Bahhaj", "Javab",
-        "Ahad", "Vahhab", "Vidad", "Badi", "Bahi", "Abha", "Vahid" ];
+    var yearNames = [ "Alif", "Bā'", "Āb", "Dāl", "Bāb", "Vāv", "Abad", "Jād",
+                      "Bahā'", "Ḥubb", "Bahhāj", "Javāb", "Aḥad", "Vahhāb",
+                      "Vidād", "Badī'", "Bahī", "Abhā", "Vāḥid" ];
     var daysInWeek = 7;
-    var weekdayNames = [ "Jalal", "Jamal", "Kamal", "Fidal",
-        "`Idal", "Istijlal", "Istiqlal" ];
+    var weekdayNames = [ "Jalāl", "Jamāl", "Kamāl", "Fidāl", "`Idāl",
+                         "Istijlāl", "Istiqlāl" ];
     var CurDateRqst = 1 << 0;
     var FirstDateRqst = 1 << 1;
     var MonthLengthRqst = 1 << 2;
@@ -271,16 +271,15 @@
                 '</option>';
         }
         html += '</select>' +
-            '<label for="VahidField" class="DatePart"> Vahid: </label>' +
+            '<label for="VahidField" class="DatePart"> Váḥid: </label>' +
             '<input type="text" class="DatePart"' +
             ' name="Vahid" id="VahidField" maxlength="2" size="2" />' +
             '<label for="KulliShayField" class="DatePart"> Kull-i-Shay: ' +
             '</label>' +
             '<input type="text" class="DatePart"' +
             ' name="KulliShay" id="KulliShayField" maxlength="3" size="2" />' +
-            '<span class="Button" id="ChangeDate">' +
-            'Change' +
-            '</span>' +
+            '<input type="submit" class="Button" id="ChangeDate"' +
+            ' value="Change" />' +
             '</form>';
         $('#DateDiv').html( html );
 

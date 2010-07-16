@@ -9,7 +9,7 @@
 
 
 #include "CalendarService.hpp"
-#include <DateDMY.hpp>
+#include <DMYDate.hpp>
 #include <CGIInput.hpp>
 #include <JSON.hpp>
 #include <DivMod.hpp>
@@ -109,7 +109,7 @@ DMYWCalendarService< C, W, O >::Names( std::string calendarName,
     CGIInput & cgiInput = CGIInput::Instance();
     std::string options = O::Get( format );
     int month = std::atoi( cgiInput[ "month" ].c_str() );
-    int year = std::atoi( cgiInput[ "year" ].c_str() );
+    long year = std::atol( cgiInput[ "year" ].c_str() );
     std::vector< std::string > weekdayNames;
     for ( int i = 0; i < W::DaysInWeek(); ++i )
         weekdayNames.push_back( W::WeekDayName( i ) );
@@ -144,12 +144,13 @@ DMYWCalendarService< C, W, O >::DateToJD( std::string calendarName,
     CGIInput & cgiInput = CGIInput::Instance();
     int day = std::atoi( cgiInput[ "day" ].c_str() );
     int month = std::atoi( cgiInput[ "month" ].c_str() );
-    int year = std::atoi( cgiInput[ "year" ].c_str() );
-    DateDMY<C> date( day, month, year );
+    long year = std::atol( cgiInput[ "year" ].c_str() );
+    DMYDate<C> date( day, month, year );
     date.MakeValid( );
-    int julianDay = date.JulianDay();
+    long julianDay = date.JulianDay();
     C::JulianDayToDMY( julianDay, &day, &month, &year );
-    int dayOfWeek = ModP( (julianDay + W::DayOfWeekOfJD0()), W::DaysInWeek() );
+    int dayOfWeek = (int)ModP( (julianDay + W::DayOfWeekOfJD0()),
+                               (long)W::DaysInWeek() );
     std::string options = O::Get( format );
     switch ( format )
     {
@@ -178,10 +179,12 @@ DMYWCalendarService< C, W, O >::JDToDate( std::string calendarName,
                                           CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    int julianDay = std::atoi( cgiInput[ "julianDay" ].c_str() );
-    int day, month, year;
+    long julianDay = std::atol( cgiInput[ "julianDay" ].c_str() );
+    int day, month;
+    long year;
     C::JulianDayToDMY( julianDay, &day, &month, &year );
-    int dayOfWeek = ModP( (julianDay + W::DayOfWeekOfJD0()), W::DaysInWeek() );
+    int dayOfWeek = (int)ModP( (julianDay + W::DayOfWeekOfJD0()),
+                               (long)W::DaysInWeek() );
     std::string options = O::Get( format );
     switch ( format )
     {
@@ -211,7 +214,7 @@ DMYWCalendarService< C, W, O >::MonthData( std::string calendarName,
 {
     CGIInput & cgiInput = CGIInput::Instance();
     int month = std::atoi( cgiInput[ "month" ].c_str() );
-    int year = std::atoi( cgiInput[ "year" ].c_str() );
+    long year = std::atol( cgiInput[ "year" ].c_str() );
     int monthLength = C::DaysInMonth( month, year );
     std::string options = O::Get( format );
     switch ( format )

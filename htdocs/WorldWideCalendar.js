@@ -35,7 +35,9 @@
     var serverURL = spec.serverURL;
     var errorHandler = εδ.WWCal.errorHandler;
     var calendarNames = [];
-    var calendarPages = {};
+    var calendarPages = [];
+    var aboutCalendarTexts = [];
+    var showingAboutCal = false;
     var curCalName = 'Gregorian';
     var currentJulianDay = -1000000;
     var todayGregorian = εδ.WWCal.GregorianDate( 0, 0, 0, 0 );
@@ -196,7 +198,7 @@
                             options: εδ.WWCal.PersianOptions()
                         } );
                 break;
-            case 'Badi':
+            case "Eastern Bahá'í":
                 calendarPages[ name ] = εδ.WWCal.BadiCalendarPage( );
                 break;
             case 'ISO 8601':
@@ -252,6 +254,7 @@
     function ChangeCalendar( )
     {
         calendarPages[ curCalName ].Start( );
+        SetupAboutCalDiv( );
     }
 
 //-----------------------------------------------------------------------------
@@ -320,6 +323,73 @@
         theObject.SetJulianDay( todayGregorian.julianDay );
         calendarPages[ curCalName ].ChangeJulianDay( );
         return false;
+    }
+
+//-----------------------------------------------------------------------------
+
+    function SetupAboutCalDiv( )
+    {
+        var html = '';
+        html += '<h3>' +
+            'About the ' + curCalName + ' calendar' +
+            '<span id="AboutCalButton" class="Button">Show</span>' +
+            '</h3>' +
+            '<div id="AboutCalText" class="AboutText"></div>';
+        $('#AboutCalDiv').html( html );
+
+        showingAboutCal = false;
+
+        $('#AboutCalButton').click( ToggleAboutCalDiv );
+    }
+
+//.............................................................................
+
+    function ToggleAboutCalDiv( )
+    {
+        if ( showingAboutCal )
+        {
+            $('#AboutCalText').hide( );
+            $('#AboutCalButton').text( 'Show' );
+            showingAboutCal = false;
+        }
+        else
+        {
+            if ( aboutCalendarTexts[ curCalName ] )
+            {
+                ShowAboutCalText( );
+            }
+            else
+            {
+                var aboutFileName = 'About' + curCalName.replace( / /g, '' ) +
+                    'Calendar.html';
+                $.ajax(
+                    {
+                        url: aboutFileName,
+                        async: true,
+                        type: 'GET',
+                        dataType: 'html',
+                        success: ProcessAboutCalText
+                    } );
+            }
+        }
+    }
+
+//.............................................................................
+
+    function ProcessAboutCalText( ajaxResponse )
+    {
+        aboutCalendarTexts[ curCalName ] = ajaxResponse;
+        ShowAboutCalText( );
+    }
+
+//.............................................................................
+
+    function ShowAboutCalText( )
+    {
+        $('#AboutCalText').html( aboutCalendarTexts[ curCalName ] );
+        $('#AboutCalText').show( );
+        $('#AboutCalButton').text( 'Hide' );
+        showingAboutCal = true;
     }
 
 //-----------------------------------------------------------------------------

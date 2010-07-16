@@ -90,12 +90,13 @@ MayanCalendarService::DateToJD( std::string calendarName,
     MayanLongCountDate date(  kin, uinal, tun, katun, baktun, pictun,
                               calabtun, kinchiltun, alautun );
     date.MakeValid( );
-    int julianDay = date.JulianDay();
+    long julianDay = date.JulianDay();
     MayanLongCountCalendar::JulianDayToLongCount( julianDay,
                                                   &kin, &uinal, &tun, &katun,
                                                   &baktun, &pictun, &calabtun,
                                                   &kinchiltun, &alautun );
-    int day, month, year;
+    int day, month;
+    long year;
     MayanHaabCalendar::JulianDayToDMY( julianDay, &day, &month, &year );
     int trecena, veintena;
     MayanTzolkinCalendar::JulianDayToTzolkin( julianDay, &trecena, &veintena );
@@ -134,13 +135,14 @@ MayanCalendarService::JDToDate( std::string calendarName,
                                CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    int julianDay = std::atoi( cgiInput[ "julianDay" ].c_str() );
+    long julianDay = std::atol( cgiInput[ "julianDay" ].c_str() );
     int kin, uinal, tun, katun, baktun, pictun, calabtun, kinchiltun, alautun;
     MayanLongCountCalendar::JulianDayToLongCount( julianDay,
                                                   &kin, &uinal, &tun, &katun,
                                                   &baktun, &pictun, &calabtun,
                                                   &kinchiltun, &alautun );
-    int day, month, year;
+    int day, month;
+    long year;
     MayanHaabCalendar::JulianDayToDMY( julianDay, &day, &month, &year );
     int trecena, veintena;
     MayanTzolkinCalendar::JulianDayToTzolkin( julianDay, &trecena, &veintena );

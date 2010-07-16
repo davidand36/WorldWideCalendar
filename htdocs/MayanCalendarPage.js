@@ -32,13 +32,14 @@
     var longCountEpoch = 584283;
     var haabEpoch = 583935;
     var tzolkinEpoch = 584124;
-    var haabMonthNames = [ "Pop", "Uo", "Zip", "Zotz", "Tzec", "Xul", "Yaxkin",
-                           "Mol", "Chen", "Yax", "Zac", "Ceh", "Mac", "Kankin",
-                           "Muan", "Pax", "Kayab", "Cumku", "Uayeb" ];
-    var tzolkinVeintenaNames = [ "Imix", "Ik", "Akbal", "Kan", "Chicchan",
-                                 "Cimi", "Manik", "Lamat", "Muluc", "Oc",
-                                 "Chuen", "Eb", "Ben", "Ix", "Men", "Cib",
-                                 "Caban", "Etznab", "Cauac", "Ahau" ];
+    var haabMonthNames = [ "Pop", "Wo'", "Sip", "Sotz'", "Sek", "Xul",
+                           "Yaxk'in'", "Mol", "Ch'en", "Yax", "Sak'", "Keh",
+                           "Mak", "K'ank'in", "Muwan'", "Pax", "K'ayab",
+                           "Kumk'u", "Wayeb'" ];
+    var tzolkinVeintenaNames = [ "Imix'", "Ik'", "Ak'b'al", "K'an", "Chikchan",
+                                 "Kimi", "Manik'", "Lamat", "Muluk", "Ok",
+                                 "Chuwen", "Eb'", "B'en", "Ix", "Men", "K'ib'",
+                                 "Kab'an", "Etz'nab'", "Kawak", "Ajaw" ];
 
 //=============================================================================
 
@@ -181,23 +182,23 @@
             '</td>' +
             '<td class="Dot"></td>' +
             '<td>' +
-            '<label for="KinchiltunField" class="DatePart">kinchiltun</label>' +
+            '<label for="KinchiltunField" class="DatePart">k\'inchiltun</label>' +
             '</td>' +
             '<td class="Dot"></td>' +
             '<td>' +
-            '<label for="CalabtunField" class="DatePart">calabtun</label>' +
+            '<label for="CalabtunField" class="DatePart">kalabtun</label>' +
             '</td>' +
             '<td class="Dot"></td>' +
             '<td>' +
-            '<label for="PictunField" class="DatePart">pictun</label>' +
+            '<label for="PictunField" class="DatePart">piktun</label>' +
             '</td>' +
             '<td class="Dot"></td>' +
             '<td>' +
-            '<label for="BaktunField" class="DatePart">baktun</label>' +
+            '<label for="BaktunField" class="DatePart">b\'ak\'tun</label>' +
             '</td>' +
             '<td class="Dot"></td>' +
             '<td>' +
-            '<label for="KatunField" class="DatePart">katun</label>' +
+            '<label for="KatunField" class="DatePart">k\'atun</label>' +
             '</td>' +
             '<td class="Dot"></td>' +
             '<td>' +
@@ -205,16 +206,15 @@
             '</td>' +
             '<td class="Dot"></td>' +
             '<td>' +
-            '<label for="UinalField" class="DatePart">uinal</label>' +
+            '<label for="UinalField" class="DatePart">winal</label>' +
             '</td>' +
             '<td class="Dot"></td>' +
             '<td>' +
-            '<label for="KinField" class="DatePart">kin</label>' +
+            '<label for="KinField" class="DatePart">k\'in</label>' +
             '</td>' +
             '<td rowspan="2">' +
-            '<span class="Button" id="ChangeLongCount">' +
-            'Change' +
-            '</span>' +
+            '<input type="submit" class="Button" id="ChangeLongCount"' +
+            ' value="Change" />' +
             '</td>' +
             '</tr>' +
             '<tr>' +

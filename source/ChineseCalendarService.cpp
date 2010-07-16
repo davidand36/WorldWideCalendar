@@ -109,18 +109,19 @@ ChineseCalendarService::DateToJD( string calendarName,
     int day = atoi( cgiInput[ "day" ].c_str() );
     int month = atoi( cgiInput[ "month" ].c_str() );
     bool leap = (cgiInput[ "leap" ] == "true");
-    int year = atoi( cgiInput[ "year" ].c_str() );
+    long year = atol( cgiInput[ "year" ].c_str() );
     if ( year < -360 )
         year = -360;
     else if ( year > 5635 )
         year = 5635;
     ChineseDate date( day, month, leap, year );
     date.MakeValid( );
-    int julianDay = date.JulianDay();
+    long julianDay = date.JulianDay();
     ChineseCalendar::JulianDayToDMLY( julianDay, &day, &month, &leap, &year );
     int dayCyclical = ChineseCalendar::DayCyclical( julianDay );
     int monthCyclical = ChineseCalendar::MonthCyclical( month, year );
-    int yearCyclical, yearCycle;
+    int yearCyclical;
+    long yearCycle;
     ChineseCalendar::LinearToSexagesimal( year, &yearCyclical, &yearCycle );
     int majorTerm, minorTerm;
     ChineseCalendar::SolarTerms( julianDay, &majorTerm, &minorTerm );
@@ -155,7 +156,7 @@ ChineseCalendarService::JDToDate( string calendarName,
                                CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    int julianDay = atoi( cgiInput[ "julianDay" ].c_str() );
+    long julianDay = atol( cgiInput[ "julianDay" ].c_str() );
     if ( julianDay < 626471 )
         julianDay = 626471;
     else if ( julianDay > 2816459 )
@@ -164,10 +165,11 @@ ChineseCalendarService::JDToDate( string calendarName,
     int day = date.Day();
     int month = date.MonthNumber();
     bool leap = date.IsMonthLeap();
-    int year = date.Year();
+    long year = date.Year();
     int dayCyclical = ChineseCalendar::DayCyclical( julianDay );
     int monthCyclical = ChineseCalendar::MonthCyclical( month, year );
-    int yearCyclical, yearCycle;
+    int yearCyclical;
+    long yearCycle;
     ChineseCalendar::LinearToSexagesimal( year, &yearCyclical, &yearCycle );
     int majorTerm, minorTerm;
     ChineseCalendar::SolarTerms( julianDay, &majorTerm, &minorTerm );
@@ -204,7 +206,7 @@ ChineseCalendarService::MonthData( string calendarName,
     CGIInput & cgiInput = CGIInput::Instance();
     int month = atoi( cgiInput[ "month" ].c_str() );
     bool leap = (cgiInput[ "leap" ] == "true");
-    int year = atoi( cgiInput[ "year" ].c_str() );
+    long year = atol( cgiInput[ "year" ].c_str() );
     ChineseDate dt( 1, month, leap, year );
     int monthLength = ChineseCalendar::DaysInMonth( dt.TrueMonth(), year );
     switch ( format )
@@ -256,12 +258,12 @@ ChineseCalendarService::SolarTerms( string calendarName,
                                     CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    int firstJD = atoi( cgiInput[ "firstJD" ].c_str() );
+    long firstJD = atol( cgiInput[ "firstJD" ].c_str() );
     int majorTerm = atoi( cgiInput[ "firstMajorTerm" ].c_str() );
     int minorTerm = atoi( cgiInput[ "firstMinorTerm" ].c_str() );
     int monthLength = atoi( cgiInput[ "monthLength" ].c_str() );
     vector< DayTerm > majorTerms;
-    int jd = firstJD;
+    long jd = firstJD;
     int day = 1;
     do
     {

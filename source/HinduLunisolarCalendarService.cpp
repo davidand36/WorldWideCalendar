@@ -135,14 +135,14 @@ HinduLunisolarCalendarService::DateToJD( string calendarName,
     bool dayLeap = (cgiInput[ "dayLeap" ] == "leap");
     int month = atoi( cgiInput[ "month" ].c_str() );
     bool monthLeap = (cgiInput[ "monthLeap" ] == "leap");
-    int year = atoi( cgiInput[ "year" ].c_str() );
+    long year = atol( cgiInput[ "year" ].c_str() );
     HinduLunisolarDate date( day, dayLeap, month, monthLeap, year );
     date.MakeValid( );
-    int julianDay = date.JulianDay();
+    long julianDay = date.JulianDay();
     HinduLunisolarCalendar::JulianDayToDLMLY( julianDay, &day, &dayLeap,
                                               &month, &monthLeap, &year );
-    int dayOfWeek = ModP( (julianDay + HinduWeek::DayOfWeekOfJD0()),
-                          HinduWeek::DaysInWeek() );
+    int dayOfWeek = (int)ModP( (julianDay + HinduWeek::DayOfWeekOfJD0()),
+                               (long)HinduWeek::DaysInWeek() );
     switch ( format )
     {
     case CalendarService::JSON:
@@ -170,14 +170,15 @@ HinduLunisolarCalendarService::JDToDate( string calendarName,
                                          CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    int julianDay = atoi( cgiInput[ "julianDay" ].c_str() );
-    int day, month, year;
+    long julianDay = atol( cgiInput[ "julianDay" ].c_str() );
+    int day, month;
+    long year;
     bool dayLeap, monthLeap;
     HinduLunisolarCalendar::JulianDayToDLMLY( julianDay,
                                               &day, &dayLeap, &month,
                                               &monthLeap, &year );
-    int dayOfWeek = ModP( (julianDay + HinduWeek::DayOfWeekOfJD0()),
-                          HinduWeek::DaysInWeek() );
+    int dayOfWeek = (int)ModP( (julianDay + HinduWeek::DayOfWeekOfJD0()),
+                               (long)HinduWeek::DaysInWeek() );
     switch ( format )
     {
     case CalendarService::JSON:
@@ -208,7 +209,7 @@ HinduLunisolarCalendarService::MonthData( string calendarName,
     CGIInput & cgiInput = CGIInput::Instance();
     int month = atoi( cgiInput[ "month" ].c_str() );
     bool monthLeap = (cgiInput[ "monthLeap" ] == "leap");
-    int year = atoi( cgiInput[ "year" ].c_str() );
+    long year = atol( cgiInput[ "year" ].c_str() );
     int lastDay = HinduLunisolarCalendar::LastDayOfMonth( month, monthLeap,
                                                           year );
     int lostDay = HinduLunisolarCalendar::LostDay( month, monthLeap, year );

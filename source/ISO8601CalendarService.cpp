@@ -74,10 +74,10 @@ ISO8601CalendarService::DateToJD( std::string calendarName,
     CGIInput & cgiInput = CGIInput::Instance();
     int day = std::atoi( cgiInput[ "day" ].c_str() );
     int week = std::atoi( cgiInput[ "week" ].c_str() );
-    int year = std::atoi( cgiInput[ "year" ].c_str() );
+    long year = std::atol( cgiInput[ "year" ].c_str() );
     ISO8601Date date( day, week, year );
     date.MakeValid( );
-    int julianDay = date.JulianDay();
+    long julianDay = date.JulianDay();
     ISO8601Calendar::JulianDayToDWY( julianDay, &day, &week, &year );
     switch ( format )
     {
@@ -103,8 +103,9 @@ ISO8601CalendarService::JDToDate( std::string calendarName,
                                CalendarService::Format format )
 {
     CGIInput & cgiInput = CGIInput::Instance();
-    int julianDay = std::atoi( cgiInput[ "julianDay" ].c_str() );
-    int day, week, year;
+    long julianDay = std::atol( cgiInput[ "julianDay" ].c_str() );
+    int day, week;
+    long year;
     ISO8601Calendar::JulianDayToDWY( julianDay, &day, &week, &year );
     switch ( format )
     {

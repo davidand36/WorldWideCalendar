@@ -34,17 +34,17 @@
     var minorTerms = [];
 
     var numStems = 10;
-    var stemNames = [ "Jia", "Yi", "Bing", "Ding", "Wu",
-                      "Ji", "Geng", "Xin", "Ren", "Gui" ];
+    var stemNames = [ "Jiǎ", "Yǐ", "Bǐng", "Dīng", "Wù", "Jǐ", "Gēng", "Xīn",
+                      "Rén", "Guǐ" ];
     var numBranches = 12;
-    var branchNames = [ "Zi", "Chou", "Yin", "Mao", "Chen", "Si",
-                        "Wu", "Wei", "Shen", "You", "Xu", "Hai" ];
+    var branchNames = [ "Zǐ", "Chǒu", "Yín", "Mǎo", "Chén", "Sì", "Wǔ", "Wèi",
+                        "Shēn", "Yǒu", "Xū", "Hài" ];
     var branchNamesEnglish = [ "Rat", "Ox", "Tiger", "Hare", "Dragon", "Snake",
                              "Horse", "Sheep", "Monkey", "Fowl", "Dog", "Pig" ];
     var numMajorSolarTerms = 12;
-    var majorSolarTermNames = [ "Yushui", "Chunfen", "Guyu", "Xiaoman",
-                                "Xiazhi", "Dashu", "Chushu", "Qiufen",
-                                "Shuangjiang", "Xiaoxue", "Dongzhi", "Dahan" ];
+    var majorSolarTermNames = [ "Yǔshuǐ", "Chūnfēn", "Gǔyǔ", "Xiǎomǎn",
+                                "Xiàzhì", "Dàshǎ", "Chǔshǔ", "Qiūfēn",
+                                "Shuāngjiàng", "Xiǎoxuě", "Dōngzhì", "Dàhán" ];
     var majorSolarTermNamesEnglish = [ "Rain Water", "Spring Equinox",
                                        "Grain Rain", "Grain Full",
                                        "Summer Solstice", "Great Heat",
@@ -52,9 +52,9 @@
                                        "Descent of Frost", "Slight Snow",
                                        "Winter Solstice", "Great Cold" ];
     var numMinorSolarTerms = 12;
-    var minorSolarTermNames = [ "Lichun", "Jingzhe", "Qingming", "Lixia",
-                                "Mangzhong", "Xiaoshu", "Liqiu", "Bailu",
-                                "Hanlu", "Lidong", "Daxue", "Xiaohan" ];
+    var minorSolarTermNames = [ "Lìchūn", "Jīngzhé", "Qīngmíng", "Lìxià",
+                                "Mángzhòng", "Xiǎoshǔ", "Lìqiū", "Báilù",
+                                "Hánlù", "Lìdōng", "Dàxuě", "Xiǎohán" ];
     var minorSolarTermNamesEnglish = [ "Beginning of Spring",
                                        "Waking of Insects", "Pure Brightness",
                                        "Beginning of Summer", "Grain in Ear",
@@ -385,9 +385,8 @@
             ' maxlength="4" size="4" />' +
             '</td>' +
             '<td rowspan="2">' +
-            '<span class="Button" id="ChangeDate">' +
-            'Change' +
-            '</span>' +
+            '<input type="submit" class="Button" id="ChangeDate"' +
+            ' value="Change" />' +
             '</td>' +
             '</tr>' +
             '<tr>' +
