@@ -274,11 +274,13 @@ p a:active
 
 .MajorDiv
 {
+    background-color: #DFDFFF;
     margin-top: 1em;
     margin-bottom: 1em;
     width: 60em;
     margin-left: auto;
     margin-right: auto;
+    padding: 0 1em;
 }
 
 table 

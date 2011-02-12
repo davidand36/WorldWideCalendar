@@ -19,7 +19,7 @@ set( sources
    )
 
 set( EpsilonDeltaLibs
-     calendar astro time math cgi util
+     calendar astro file time math cgi util
    )
 set( libs "" )
 foreach( lib ${EpsilonDeltaLibs} )
