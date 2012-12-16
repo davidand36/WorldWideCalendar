@@ -21,6 +21,7 @@
 #include <CGIInput.hpp>
 #include <CGIOutput.hpp>
 #include <JSON.hpp>
+#include <FileReader.hpp>
 #include <JPLEphemeris.hpp>
 #include <WesternWeek.hpp>
 #include <EgyptianCalendar.hpp>
@@ -45,6 +46,7 @@
 #include <string>
 #include <fstream>
 #include <cstdlib>
+#include <tr1/memory>
 using namespace std;
 using namespace std::tr1;
 using namespace EpsilonDelta;
@@ -152,8 +154,11 @@ int main( int argc, char ** argv )
             if ( firstTime )
             {
                 firstTime = false;
-                de405.Init( "JPL_DE405.be", false );
-                de406.Init( "JPL_DE406.be", false );
+                shared_ptr< Reader > spReader(
+                    new FileReader( "JPL_DE405.le" ) );
+                de405.Init( spReader, false );
+                spReader.reset( new FileReader( "JPL_DE406.le" ) );
+                de406.Init( spReader, false );
                 JPLEphemeris::RegisterEphemeris( de405 );
                 JPLEphemeris::RegisterEphemeris( de406 );
             }
