@@ -142,8 +142,8 @@ int main( int argc, char ** argv )
     bool firstTime = true;
     string responseText;
     string errorMsg;
-    JPLEphemeris de405;
-    JPLEphemeris de406;
+    shared_ptr< JPLEphemeris > spDE405( new JPLEphemeris( ) );
+    shared_ptr< JPLEphemeris > spDE406( new JPLEphemeris( ) );
 
     try
     {
@@ -156,11 +156,11 @@ int main( int argc, char ** argv )
                 firstTime = false;
                 shared_ptr< Reader > spReader(
                     new FileReader( "JPL_DE405.le" ) );
-                de405.Init( spReader, false );
+                spDE405->Init( spReader, false );
                 spReader.reset( new FileReader( "JPL_DE406.le" ) );
-                de406.Init( spReader, false );
-                JPLEphemeris::RegisterEphemeris( de405 );
-                JPLEphemeris::RegisterEphemeris( de406 );
+                spDE406->Init( spReader, false );
+                JPLEphemeris::RegisterEphemeris( spDE405 );
+                JPLEphemeris::RegisterEphemeris( spDE406 );
             }
             GetCgiGlobals( );
             string response = WriteHttpResponse( );
