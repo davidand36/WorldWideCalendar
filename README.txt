@@ -10,4 +10,4 @@ about the calendars.
 The site uses standard HTML, CSS, and JavaScript on the client side. It uses
 AJAX to communicate with the server, where most of the computation is done.
 
-The server app is written in C++ as a FastCGI service. It relies on several of the libEpsilonDelta libraries, available at https://github.com/davidand36/libEpsilonDelta.git .
+The server app is written in C++ as a FastCGI service. It relies on several of the libEpsilonDelta libraries, available at git://github.com/davidand36/libEpsilonDelta.git .
