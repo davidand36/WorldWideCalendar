@@ -1,0 +1,17 @@
+#!/bin/sh
+
+docker container stop $(docker container ls -a -q)
+docker container rm $(docker container ls -a -q)
+rm -rf Docker/htdocs
+rm -rf Docker/cgi-bin
+
+mkdir Docker/htdocs
+cp -a htdocs/. Docker/htdocs/
+mkdir Docker/cgi-bin
+cp WorldWideCalendar Docker/cgi-bin/
+cp -a data/. Docker/cgi-bin/
+
+cd Docker
+
+docker build -t worldwidecalendar .
+docker run -d -p 4000:80 worldwidecalendar

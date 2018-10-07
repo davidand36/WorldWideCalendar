@@ -417,7 +417,7 @@
 //*****************************************************************************
 
 
-εδ.WWCal.app = εδ.WWCal.App( { serverURL:'/srvc/WorldWideCalendar' } );
+εδ.WWCal.app = εδ.WWCal.App( { serverURL:'/cgi-bin/WorldWideCalendar' } );
 
 
 //*****************************************************************************
