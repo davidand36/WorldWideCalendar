@@ -15,4 +15,7 @@ debug/*
 release/*
 WorldWideCalendar
 
+Docker/htdocs/
+Docker/cgi-bin/
+
 # Misc files
