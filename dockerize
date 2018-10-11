@@ -1,17 +1,22 @@
 #!/bin/sh
 
+export WWC_PORT=6101
+
 docker container stop $(docker container ls -a -q)
 docker container rm $(docker container ls -a -q)
-rm -rf Docker/htdocs
-rm -rf Docker/cgi-bin
+rm -rf Docker/htdocs/
+rm -rf Docker/cgi-bin/
+rm -rf Docker/data/
 
 mkdir Docker/htdocs
 cp -a htdocs/. Docker/htdocs/
 mkdir Docker/cgi-bin
 cp WorldWideCalendar Docker/cgi-bin/
-cp -a data/. Docker/cgi-bin/
+mkdir Docker/data
+cp -a data/. Docker/data/
 
 cd Docker
 
-docker build -t worldwidecalendar .
-docker run -d -p 4000:80 worldwidecalendar
+docker build -t worldwidecalendar -f WWC_Dockerfile .
+docker build -t astrodata -f Data_Dockerfile .
+docker-compose up -d

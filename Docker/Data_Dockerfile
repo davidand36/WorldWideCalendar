@@ -1,0 +1,4 @@
+FROM alpine
+RUN mkdir /data
+VOLUME /data
+COPY data/ data/

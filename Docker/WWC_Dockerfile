@@ -4,8 +4,10 @@ RUN apt-get update && apt-get install -y \
     libfcgi \
     libapache2-mod-fcgid
 EXPOSE 80
+RUN mkdir /usr/local/share/astrodata
+VOLUME /usr/local/share/astrodata
 COPY bin/  /usr/local/bin/
 COPY conf/sites-available/  /etc/apache2/sites-available/
 COPY cgi-bin/  /var/www/fcgi-bin/
 COPY htdocs/  /var/www/html/
-CMD [ "/usr/local/bin/apache2-foreground" ]
+CMD [ "/usr/local/bin/startup-wwc" ]

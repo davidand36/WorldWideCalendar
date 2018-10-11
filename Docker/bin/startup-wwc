@@ -1,0 +1,4 @@
+#!/bin/sh
+
+ln -s /usr/local/share/astrodata/*  /var/www/fcgi-bin/
+apache2-foreground

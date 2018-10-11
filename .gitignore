@@ -17,5 +17,6 @@ WorldWideCalendar
 
 Docker/htdocs/
 Docker/cgi-bin/
+Docker/data/
 
 # Misc files
