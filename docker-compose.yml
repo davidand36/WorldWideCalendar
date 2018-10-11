@@ -1,0 +1,15 @@
+version: "3"
+services:
+  worldwidecalendar:
+    image: davidand36/worldwidecalendar
+    volumes:
+      - wwc_volume:/usr/local/share/astrodata:ro
+    ports:
+      - ${WWC_PORT:-80}:80
+  astrodata:
+    image: davidand36/astrodata
+    volumes:
+      - wwc_volume:/data
+volumes:
+  wwc_volume:
+  
